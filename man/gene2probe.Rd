@@ -20,4 +20,7 @@ keys a data frame of possible values
 \description{
 \code{gene2probe} returns probeIDs compatible with several Microarray Platforms
 }
+\author{
+Nikos Sidiropoulos
+}
 

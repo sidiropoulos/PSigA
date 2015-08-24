@@ -27,4 +27,7 @@ a data frame with columns: Signature Name, Number of principal components used, 
 \code{\link{signaturePCA}}, where \emph{n} is component where the cumulative variance is above a user specified cutoff.
 Much more to be written...
 }
+\author{
+Nikos Sidiropoulos
+}
 

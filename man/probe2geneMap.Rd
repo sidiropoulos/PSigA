@@ -17,4 +17,7 @@ character vector of gene symbols
 \description{
 Converts probe id to gene symbols
 }
+\author{
+Nikos Sidiropoulos
+}
 

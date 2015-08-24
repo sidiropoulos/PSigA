@@ -4,7 +4,7 @@
 \alias{signaturePCA}
 \title{PCA based on a given gene-signature}
 \usage{
-signaturePCA(genes, data, db, ...)
+signaturePCA(genes, data, db, center = TRUE, scale = FALSE, ...)
 }
 \arguments{
 \item{genes}{Character vector with the gene identifiers}
@@ -13,10 +13,19 @@ signaturePCA(genes, data, db, ...)
 
 \item{db}{Microarray Platform}
 
-\item{...}{arguments passed to \code{\link{prcomp}}.}
+\item{center}{a logical value indicating whether the variables should be shifted to be zero centered. See
+\code{\link{prcomp}} for more details.}
+
+\item{scale}{a logical value indicating whether the variables should be scaled to have unit variance before
+the analysis takes place. See \code{prcomp} for more details.}
+
+\item{...}{arguments passed to \code{prcomp}.}
 }
 \description{
 \code{signaturePCA} performs principal component analysis on the given data matrix and gene-signature and
 returns the results as an object of class \code{prcomp}.
+}
+\author{
+Nikos Sidiropoulos
 }
 

@@ -15,4 +15,7 @@ reduceProbes(keys, data)
 \code{reduceprobes} finds and selects the probe with the highest mean expression among the probes of the
 same gene.
 }
+\author{
+Nikos Sidiropoulos
+}
 
