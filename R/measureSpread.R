@@ -4,6 +4,8 @@
 #' \code{\link{signaturePCA}}, where \emph{n} is component where the cumulative variance is above a user specified cutoff.
 #' Much more to be written...
 #'
+#' @author Nikos Sidiropoulos
+#'
 #' @param sigpca signature PCA. Object of class \code{\link{prcomp}}. Can be produced with \code{\link{signaturePCA}}.
 #' @param varCutoff cumulative variance cutoff. The function will measure the area under the components that describe more
 #' or equal portion of the variance defined by this parameter.

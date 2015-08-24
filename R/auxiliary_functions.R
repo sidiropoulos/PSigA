@@ -3,22 +3,30 @@
 #' @description \code{signaturePCA} performs principal component analysis on the given data matrix and gene-signature and
 #' returns the results as an object of class \code{prcomp}.
 #'
+#' @author Nikos Sidiropoulos
+#'
 #' @param genes Character vector with the gene identifiers
 #' @param data Data matrix with gene expression values
 #' @param db Microarray Platform
-#' @param ... arguments passed to \code{\link{prcomp}}.
+#' @param center a logical value indicating whether the variables should be shifted to be zero centered. See
+#' \code{\link{prcomp}} for more details.
+#' @param scale a logical value indicating whether the variables should be scaled to have unit variance before
+#' the analysis takes place. See \code{prcomp} for more details.
+#' @param ... arguments passed to \code{prcomp}.
 #'
 #' @export signaturePCA
-signaturePCA <- function(genes, data, db, ...) {
+signaturePCA <- function(genes, data, db, center = TRUE, scale = FALSE, ...) {
 
   #Convert geneID to probeID
   keys <- reduceProbes( gene2probe(genes, db), data[])
-  prcomp(t(data[keys,]), center = TRUE, scale = FALSE, ...)
+  prcomp(t(data[keys,]), center = center, scale = scale, ...)
 }
 
 #' @title  Convert gene identifiers to microarray probeID
 #'
 #' @description \code{gene2probe} returns probeIDs compatible with several Microarray Platforms
+#'
+#' @author Nikos Sidiropoulos
 #'
 #' @param genes List of gene identifiers to be converted
 #' @param db Microarray platform. See details for a list of valid inputs
@@ -27,21 +35,23 @@ signaturePCA <- function(genes, data, db, ...) {
 #'
 #' @return keys a data frame of possible values
 #'
-#' @import hgu133plus2.db
-#' @export
+#' @import AnnotationDbi hgu133plus2.db
+#' @export gene2probe
 gene2probe <- function(genes, db, keytype = "SYMBOL") {
 
-  keys <- try(suppressWarnings(select( x = get(db), keys = genes, columns = "PROBEID" , keytype)), TRUE)
+#    keys <- try(suppressWarnings(AnnotationDbi::select( x = get(db), keys = genes, columns = "PROBEID" , keytype)), TRUE)
 
-  #If ALL provided genes don't map to any probes return NULL
-  if ( inherits( keys, "try-error" ) ) {
-    return(NULL)
-  }
+    keys <- AnnotationDbi::select( x = get(db), keys = genes, columns = "PROBEID" , keytype)
 
-  #Remove genes that didn't map to any probes
-  keys <- keys[ ! is.na(keys[,2]), ]
+#     #If ALL provided genes don't map to any probes return NULL
+#     if ( inherits( keys, "try-error" ) ) {
+#         return(NULL)
+#     }
 
-  keys
+    #Remove genes that didn't map to any probes
+    keys <- keys[ ! is.na(keys[,2]), ]
+
+    keys
 
 }
 
@@ -50,13 +60,15 @@ gene2probe <- function(genes, db, keytype = "SYMBOL") {
 #' @description \code{reduceprobes} finds and selects the probe with the highest mean expression among the probes of the
 #' same gene.
 #'
+#' @author Nikos Sidiropoulos
+#'
 #' @param keys data frame of probe identifiers. Output of \code{\link{gene2probe}} function.
 #' @param data gene expression matrix
 #'
 #' @export reduceProbes
 reduceProbes <- function(keys, data) {
 
-  if ( is.null( keys ) ) { return(NULL) }
+  #if ( is.null( keys ) ) { return(NULL) }
 
   #Initialize vector of probes to keep
   kept <- character(0)
@@ -79,16 +91,27 @@ reduceProbes <- function(keys, data) {
 #'
 #' @description Converts probe id to gene symbols
 #'
+#' @author Nikos Sidiropoulos
+#'
 #' @param keys a character vector of probe identifiers
 #' @param db microarray platform
 #' @return character vector of gene symbols
 #'
-#' @import hgu133plus2.db
+#' @import AnnotationDbi hgu133plus2.db
 #' @export probe2geneMap
 probe2geneMap <- function(keys, db){
 
-    keys <- select(get(db), keys, "PROBEID", "SYMBOL")
+    keys <- AnnotationDbi::select(get(db), keys, columns = "SYMBOL", keytype = "PROBEID")
+
     #Remove non mapped and get the unique ones
-    unique(keys[!is.na(keys[,2]),1])
+
+    genes <- c()
+
+    for (probe in unique(keys$PROBEID)) {
+        genes <- c(genes, paste( keys$SYMBOL[ keys$PROBEID == probe ], collapse = "/"))
+    }
+
+    genes
 }
+
 
