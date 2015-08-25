@@ -5,7 +5,9 @@
 \title{Produces a bibplot of the selected signature's PCA}
 \usage{
 sigBiplot(sigPCA, pcs = c(1, 2), groups = NULL, genenames = TRUE,
-  main = "Signature", db = "hgu133plus2.db", palette = "Paired", ...)
+  labels = NULL, db = "hgu133plus2.db", main = "Signature",
+  obs.size = 2, var.size = 3, var.scaled = FALSE, palette = "Paired",
+  ...)
 }
 \arguments{
 \item{sigPCA}{a \code{\link{prcomp}} object, preferrably produced using \code{\link{signaturePCA}}}
@@ -17,9 +19,18 @@ If provided the points will be colored according to groups}
 
 \item{genenames}{when TRUE, gene symbols are used instead of probe ids as variable names}
 
-\item{main}{plot title}
+\item{labels}{optional vector of labels for the observations}
 
 \item{db}{microarray platform}
+
+\item{main}{plot title}
+
+\item{obs.size}{size of the points for the observations}
+
+\item{var.size}{size of the text for the variables}
+
+\item{var.scaled}{logical value. When set to TRUE the variable text size is proportional to the
+Euclidean Norm of the variable's loading (see \code{\link{measureLoadings}}).}
 
 \item{palette}{colorbrewer palette scheme to be used. Applicable only when groups are provided.}
 
