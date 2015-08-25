@@ -8,8 +8,9 @@
 #' @param pcs which PCs to plot. default: 1,2
 #' @param groups optional factor variable indicating the groups that the observations belong to.
 #' If provided the points will be colored according to groups
-#' @param db microarray platform
+#' @param labels optional vector of labels for the observations
 #' @param genenames when TRUE, gene symbols are used instead of probe ids as variable names
+#' @param db microarray platform
 #' @param main plot title
 #' @param palette colorbrewer palette scheme to be used. Applicable only when groups are provided.
 #' @param ... methods passed to \code{\link{ggbiplot}}
@@ -19,13 +20,18 @@
 #' @import ggbiplot
 #' @export
 
-sigBiplot <- function(sigPCA, pcs = c(1,2), groups = NULL, genenames = TRUE, main = "Signature", db = "hgu133plus2.db",
-                      palette = "Paired", ...) {
+sigBiplot <- function(sigPCA, pcs = c(1,2), groups = NULL, genenames = TRUE, labels = NULL, main = "Signature",
+                      db = "hgu133plus2.db", palette = "Paired", ...) {
 
     if (genenames)
         rownames(sigPCA$rotation) <- probe2geneMap(rownames(sigPCA$rotation), db)
 
-    ggbiplot(sigPCA, choices = pcs, groups = groups, ... ) + ggtitle(main) + scale_color_brewer(palette = palette)
+    if (!is.null(labels))
+        p <- ggbiplot(sigPCA, choices = pcs, groups = groups, labels = labels, ... ) + theme(legend.position="none")
+    else
+        p <- ggbiplot(sigPCA, choices = pcs, groups = groups, ... ) + geom_point(aes(colour=groups), size=3)
+
+    p + ggtitle(main) + scale_color_brewer(palette = palette)
 }
 
 #' @title Signature PCA plot
