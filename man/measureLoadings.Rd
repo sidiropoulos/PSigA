@@ -4,12 +4,15 @@
 \alias{measureLoadings}
 \title{Measure variable loadings}
 \usage{
-measureLoadings(pca, varCutoff = 0.75)
+measureLoadings(pca, varCutoff = 0.75, pcs = NULL)
 }
 \arguments{
 \item{pca}{\code{\link{prcomp}} object.}
 
 \item{varCutoff}{cumulative variance cutoff.}
+
+\item{pcs}{when set the function will compute the Euclidean norm for selected principal components
+instead of using the first \code{n} (overrides \code{varCutoff}). Vector of length 2.}
 }
 \value{
 norms a vector with the Euclidean Norm of all the loadings.
