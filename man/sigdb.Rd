@@ -4,8 +4,8 @@
 \name{sigdb}
 \alias{sigdb}
 \title{12,617 gene signatures}
-\format{A list with 12617 entries, each one representing a gene signature. The name of each list entry represents
-the signature's name.}
+\format{A list with 12617 entries, each one representing a gene signature.
+The name of each list entry represents the signature's name.}
 \source{
 \url{http://www.broadinstitute.org/gsea/msigdb/index.jsp}
 
@@ -17,8 +17,8 @@ the signature's name.}
 data(sigdb)
 }
 \description{
-Gene pathways were obtained from Molecular Signature Database (MSigDB), Connectivity Map (cmap)
-and the signatures by Rapin et. al.
+Gene pathways were obtained from Molecular Signature Database (MSigDB),
+Connectivity Map (cmap) and the signatures by Rapin et. al.
 }
 \keyword{datasets}
 

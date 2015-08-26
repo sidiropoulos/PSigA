@@ -6,8 +6,10 @@
 \alias{SigPCA-package}
 \title{SigPCA: A gene-signature based exploratory tool for gene expression data.}
 \description{
-The SigPCA package provides a set of functions to perform Principal Component analysis based on genetic pathways.
-Moreover SigPCA incorporates an algorithm to measure the spread of the data in the PCA space and rank the
-gene-signatures based on their ability to split the data in distinct entities.
+The SigPCA package provides a set of functions to perform Principal Component
+analysis based on genetic pathways. Moreover SigPCA incorporates an algorithm
+to measure the spread of the data in the PCA space and rank the
+gene-signatures based on their ability to split the data in distinct
+entities.
 }
 

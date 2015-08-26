@@ -2,18 +2,20 @@
 % Please edit documentation in R/auxiliary_functions.R
 \name{reduceProbes}
 \alias{reduceProbes}
-\title{For each gene select the probe with the highest mean expression across the input sample.}
+\title{For each gene select the probe with the highest mean expression
+across the input sample.}
 \usage{
 reduceProbes(keys, data)
 }
 \arguments{
-\item{keys}{data frame of probe identifiers. Output of \code{\link{gene2probe}} function.}
+\item{keys}{data frame of probe identifiers. Output of
+\code{\link{gene2probe}} function.}
 
 \item{data}{gene expression matrix}
 }
 \description{
-\code{reduceprobes} finds and selects the probe with the highest mean expression among the probes of the
-same gene.
+\code{reduceprobes} finds and selects the probe with the highest
+mean expression among the probes of the same gene.
 }
 \author{
 Nikos Sidiropoulos

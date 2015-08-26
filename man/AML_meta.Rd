@@ -10,7 +10,8 @@
     \item gender: 1 = male, 0 = female
     \item age: patient's age in years
     \item OS: Survival from diagnosis until the last follow up in days
-    \item EventOS: Patient status by the time of the last follow up. 1 = dead, 0 = alive
+    \item EventOS: Patient status by the time of the last follow up.
+          1 = dead, 0 = alive
 }}
 \source{
 \url{https://tcga-data.nci.nih.gov/tcga/}

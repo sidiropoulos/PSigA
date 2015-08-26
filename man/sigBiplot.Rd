@@ -10,14 +10,16 @@ sigBiplot(sigPCA, pcs = c(1, 2), groups = NULL, genenames = TRUE,
   ...)
 }
 \arguments{
-\item{sigPCA}{a \code{\link{prcomp}} object, preferrably produced using \code{\link{signaturePCA}}}
+\item{sigPCA}{a \code{\link{prcomp}} object, preferrably produced using
+\code{\link{signaturePCA}}}
 
 \item{pcs}{which PCs to plot. default: 1,2}
 
-\item{groups}{optional factor variable indicating the groups that the observations belong to.
-If provided the points will be colored according to groups}
+\item{groups}{optional factor variable indicating the groups that the
+observations belong to. If provided the points will be colored accordingly}
 
-\item{genenames}{when TRUE, gene symbols are used instead of probe ids as variable names}
+\item{genenames}{when TRUE, gene symbols are used instead of probe ids as
+variable names}
 
 \item{labels}{optional vector of labels for the observations}
 
@@ -29,10 +31,12 @@ If provided the points will be colored according to groups}
 
 \item{var.size}{size of the text for the variables}
 
-\item{var.scaled}{logical value. When set to TRUE the variable text size is proportional to the
-Euclidean Norm of the variable's loading (see \code{\link{measureLoadings}}).}
+\item{var.scaled}{logical value. When set to TRUE the variable text size is
+proportional to the Euclidean Norm of the variable's loading
+(see \code{\link{measureLoadings}}).}
 
-\item{palette}{colorbrewer palette scheme to be used. Applicable only when groups are provided.}
+\item{palette}{colorbrewer palette scheme to be used. Applicable only when
+\code{groups} are provided.}
 
 \item{...}{methods passed to \code{\link{ggbiplot}}}
 }

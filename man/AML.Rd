@@ -4,7 +4,8 @@
 \name{AML}
 \alias{AML}
 \title{Microarray data of 183 AML patients}
-\format{A data frame with 54675 rows (Affy HGU 133 Plus 2 probes) and 183 columns (patients).}
+\format{A data frame with 54675 rows (Affy HGU 133 Plus 2 probes) and 183
+columns (patients).}
 \source{
 \url{https://tcga-data.nci.nih.gov/tcga/}
 }
@@ -12,9 +13,9 @@
 data(AML)
 }
 \description{
-Gene expression data of 183 AML patients, retrieved from TCGA, normalized and batch corrected.
-Rows represent microarray probes of the Affymetrix HGU 133 Plus2 platform. Each column represents
-an AML patient.
+Gene expression data of 183 AML patients, retrieved from TCGA, normalized
+and batch corrected. Rows represent microarray probes of the Affymetrix HGU
+133 Plus2 platform. Each column represents an AML patient.
 }
 \keyword{datasets}
 

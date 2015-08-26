@@ -8,13 +8,16 @@ sigPlot(sigPCA, pcs = c(1, 2), groups = NULL, text = FALSE,
   main = "Signature", palette = "Paired", ...)
 }
 \arguments{
-\item{sigPCA}{a \code{\link{prcomp}} object, preferrably produced using \code{\link{signaturePCA}}}
+\item{sigPCA}{a \code{\link{prcomp}} object, preferrably produced using
+\code{\link{signaturePCA}}}
 
 \item{pcs}{which PCs to plot. default: 1,2}
 
-\item{groups}{optional factor variable indicating the groups that the observations belong to.}
+\item{groups}{optional factor variable indicating the groups that the
+observations belong to.}
 
-\item{text}{when TRUE it plots textual annotations instead of points based on \code{groups} parameter.}
+\item{text}{when TRUE it plots textual annotations instead of points
+based on \code{groups} parameter.}
 
 \item{main}{plot title}
 

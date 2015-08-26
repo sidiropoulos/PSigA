@@ -8,10 +8,12 @@ measureSpread(sigpca, varCutoff = 0.75, denCutoffLow = 0.005,
   denCutoffHigh = 0.05, sigName = "NA")
 }
 \arguments{
-\item{sigpca}{signature PCA. Object of class \code{\link{prcomp}}. Can be produced with \code{\link{signaturePCA}}.}
+\item{sigpca}{signature PCA. Object of class \code{\link{prcomp}}. Can be
+produced with \code{\link{signaturePCA}}.}
 
-\item{varCutoff}{cumulative variance cutoff. The function will measure the area under the components that describe more
-or equal portion of the variance defined by this parameter.}
+\item{varCutoff}{cumulative variance cutoff. The function will measure the
+area under the components that describe more or equal portion of the
+variance defined by this parameter.}
 
 \item{denCutoffLow}{lower density cutoff.}
 
@@ -20,11 +22,13 @@ or equal portion of the variance defined by this parameter.}
 \item{sigName}{?}
 }
 \value{
-a data frame with columns: Signature Name, Number of principal components used, Density area.
+a data frame with columns: Signature Name, Number of principal
+components used, Density area.
 }
 \description{
-\code{measureSpread} integrates the density curves of the first \emph{n} principle components of a
-\code{\link{signaturePCA}}, where \emph{n} is component where the cumulative variance is above a user specified cutoff.
+\code{measureSpread} integrates the density curves of the first
+\emph{n} principle components of a \code{\link{signaturePCA}}, where \emph{n}
+is component where the cumulative variance is above a user specified cutoff.
 Much more to be written...
 }
 \author{

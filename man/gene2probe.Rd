@@ -11,14 +11,16 @@ gene2probe(genes, db, keytype = "SYMBOL")
 
 \item{db}{Microarray platform. See details for a list of valid inputs}
 
-\item{keytype}{the keytype that matches the keys used in the \code{gene} parameter. See a list with valid inputs
-in the details below. (Default = "SYMBOL")}
+\item{keytype}{the keytype that matches the keys used in the \code{gene}
+parameter. See a list with valid inputs in the details below.
+(Default = "SYMBOL")}
 }
 \value{
 keys a data frame of possible values
 }
 \description{
-\code{gene2probe} returns probeIDs compatible with several Microarray Platforms
+\code{gene2probe} returns probeIDs compatible with several
+Microarray Platforms
 }
 \author{
 Nikos Sidiropoulos
