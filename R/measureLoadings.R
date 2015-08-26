@@ -1,14 +1,15 @@
 #' @title Measure variable loadings
-#' @description Measures the Euclidean Norm of the PCA loadings (rotation matrix) of the first
-#' \code{n} principal components, where the cumulative variance on the \code{n}-th principal component
-#' is above a cutoff.
+#' @description Measures the Euclidean Norm of the PCA loadings (rotation
+#' matrix) of the first \code{n} principal components, where the cumulative
+#' variance on the \code{n}-th principal component is above a cutoff.
 #'
 #' @author Nikos Sidiropoulos
 #'
 #' @param pca \code{\link{prcomp}} object.
 #' @param varCutoff cumulative variance cutoff.
-#' @param pcs when set the function will compute the Euclidean norm for selected principal components
-#' instead of using the first \code{n} (overrides \code{varCutoff}). Vector of length 2.
+#' @param pcs when set the function will compute the Euclidean norm for
+#' selected principal components instead of using the first \code{n}
+#' (overrides \code{varCutoff}). Vector of length 2.
 #'
 #' @return norms a vector with the Euclidean Norm of all the loadings.
 #'

@@ -1,6 +1,7 @@
 #' @title PCA based on a given gene-signature
 #'
-#' @description \code{signaturePCA} performs principal component analysis on the given data matrix and gene-signature and
+#' @description \code{signaturePCA} performs principal component analysis on
+#' the given data matrix and gene-signature and
 #' returns the results as an object of class \code{prcomp}.
 #'
 #' @author Nikos Sidiropoulos
@@ -8,10 +9,11 @@
 #' @param genes Character vector with the gene identifiers
 #' @param data Data matrix with gene expression values
 #' @param db Microarray Platform
-#' @param center a logical value indicating whether the variables should be shifted to be zero centered. See
-#' \code{\link{prcomp}} for more details.
-#' @param scale a logical value indicating whether the variables should be scaled to have unit variance before
-#' the analysis takes place. See \code{prcomp} for more details.
+#' @param center a logical value indicating whether the variables should be
+#' shifted to be zero centered. See \code{\link{prcomp}} for more details.
+#' @param scale a logical value indicating whether the variables should be
+#' scaled to have unit variance before the analysis takes place. See
+#' \code{prcomp} for more details.
 #' @param ... arguments passed to \code{prcomp}.
 #'
 #' @export signaturePCA
@@ -24,14 +26,16 @@ signaturePCA <- function(genes, data, db, center = TRUE, scale = FALSE, ...) {
 
 #' @title  Convert gene identifiers to microarray probeID
 #'
-#' @description \code{gene2probe} returns probeIDs compatible with several Microarray Platforms
+#' @description \code{gene2probe} returns probeIDs compatible with several
+#' Microarray Platforms
 #'
 #' @author Nikos Sidiropoulos
 #'
 #' @param genes List of gene identifiers to be converted
 #' @param db Microarray platform. See details for a list of valid inputs
-#' @param keytype the keytype that matches the keys used in the \code{gene} parameter. See a list with valid inputs
-#' in the details below. (Default = "SYMBOL")
+#' @param keytype the keytype that matches the keys used in the \code{gene}
+#' parameter. See a list with valid inputs in the details below.
+#' (Default = "SYMBOL")
 #'
 #' @return keys a data frame of possible values
 #'
@@ -41,7 +45,8 @@ gene2probe <- function(genes, db, keytype = "SYMBOL") {
 
 #    keys <- try(suppressWarnings(AnnotationDbi::select( x = get(db), keys = genes, columns = "PROBEID" , keytype)), TRUE)
 
-    keys <- AnnotationDbi::select( x = get(db), keys = genes, columns = "PROBEID" , keytype)
+    keys <- AnnotationDbi::select( x = get(db), keys = genes,
+                                   columns = "PROBEID" , keytype)
 
 #     #If ALL provided genes don't map to any probes return NULL
 #     if ( inherits( keys, "try-error" ) ) {
@@ -55,14 +60,16 @@ gene2probe <- function(genes, db, keytype = "SYMBOL") {
 
 }
 
-#' @title For each gene select the probe with the highest mean expression across the input sample.
+#' @title For each gene select the probe with the highest mean expression
+#' across the input sample.
 #'
-#' @description \code{reduceprobes} finds and selects the probe with the highest mean expression among the probes of the
-#' same gene.
+#' @description \code{reduceprobes} finds and selects the probe with the highest
+#' mean expression among the probes of the same gene.
 #'
 #' @author Nikos Sidiropoulos
 #'
-#' @param keys data frame of probe identifiers. Output of \code{\link{gene2probe}} function.
+#' @param keys data frame of probe identifiers. Output of
+#' \code{\link{gene2probe}} function.
 #' @param data gene expression matrix
 #'
 #' @export reduceProbes
@@ -101,14 +108,16 @@ reduceProbes <- function(keys, data) {
 #' @export probe2geneMap
 probe2geneMap <- function(keys, db){
 
-    keys <- AnnotationDbi::select(get(db), keys, columns = "SYMBOL", keytype = "PROBEID")
+    keys <- AnnotationDbi::select(get(db), keys, columns = "SYMBOL",
+                                  keytype = "PROBEID")
 
     #Remove non mapped and get the unique ones
 
     genes <- c()
 
     for (probe in unique(keys$PROBEID)) {
-        genes <- c(genes, paste( keys$SYMBOL[ keys$PROBEID == probe ], collapse = "/"))
+        genes <- c(genes, paste( keys$SYMBOL[ keys$PROBEID == probe ],
+                                 collapse = "/"))
     }
 
     genes
