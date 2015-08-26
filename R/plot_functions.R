@@ -44,14 +44,19 @@ sigBiplot <- function(sigPCA, pcs = c(1,2), groups = NULL, genenames = TRUE,
 
     if (!is.null(labels)){
         p <- ggbiplot(sigPCA, choices = pcs, groups = groups, labels = labels,
-                      ... )
-        p <- p + geom_path(size = obs.size) + theme(legend.position="none")
-    }else
+                      labels.size = obs.size, ... )
+        p <- p + theme(legend.position="none")
+        p <- p + scale_color_brewer(palette = palette)
+    }else if (!is.null(groups)){
         p <- ggbiplot(sigPCA, choices = pcs, groups = groups,
                       varname.size = var.size, ... )
         p <- p + geom_point(aes(colour=groups), size = obs.size)
-
-    p + ggtitle(main) + scale_color_brewer(palette = palette)
+        p <- p + scale_color_brewer(palette = palette)
+    }else {
+        p <- ggbiplot(sigPCA, choices = pcs, varname.size = var.size, ...)
+        p <- p + geom_point(size = obs.size)
+    }
+    p + ggtitle(main)
 }
 
 #' @title Signature PCA plot
