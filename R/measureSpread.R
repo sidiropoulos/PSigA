@@ -33,7 +33,11 @@ measureSpread <- function( sigpca, varCutoff = 0.75, denCutoffLow = 0.005,
     #above the cutoff
     idx <- which(cumsum(sigpca$sdev**2) / sum(sigpca$sdev**2) > varCutoff)[1]
 
-    densities <- apply( sigpca$x[ , 1:idx ], 2, density, bw = "SJ" )
+    if (idx == 1){
+        densities <- density(sigpca$x[, 1], bw = "SJ")
+        densities <- list(densities)
+    }else
+        densities <- apply( sigpca$x[ , 1:idx ], 2, density, bw = "SJ" )
 
     areaProd <- 1
     areaSum <- 0
