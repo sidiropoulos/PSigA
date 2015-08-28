@@ -45,8 +45,9 @@ gene2probe <- function(genes, db, keytype = "SYMBOL") {
 
 #    keys <- try(suppressWarnings(AnnotationDbi::select( x = get(db), keys = genes, columns = "PROBEID" , keytype)), TRUE)
 
-    keys <- AnnotationDbi::select( x = get(db), keys = genes,
-                                   columns = "PROBEID" , keytype)
+    keys <- suppressMessages(AnnotationDbi::select( x = get(db), keys = genes,
+                                                    columns = "PROBEID",
+                                                    keytype))
 
 #     #If ALL provided genes don't map to any probes return NULL
 #     if ( inherits( keys, "try-error" ) ) {
@@ -108,8 +109,9 @@ reduceProbes <- function(keys, data) {
 #' @export probe2geneMap
 probe2geneMap <- function(keys, db){
 
-    keys <- AnnotationDbi::select(get(db), keys, columns = "SYMBOL",
-                                  keytype = "PROBEID")
+    keys <- suppressMessages(AnnotationDbi::select(get(db), keys,
+                                                   columns = "SYMBOL",
+                                                   keytype = "PROBEID"))
 
     #Remove non mapped and get the unique ones
 

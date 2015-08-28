@@ -5,7 +5,7 @@
 \title{Measures the area under the density curve on PC space}
 \usage{
 measureSpread(sigpca, varCutoff = 0.75, denCutoffLow = 0.005,
-  denCutoffHigh = 0.05, sigName = "NA")
+  denCutoffHigh = 0.05, pc = NULL, sigName = "NA")
 }
 \arguments{
 \item{sigpca}{signature PCA. Object of class \code{\link{prcomp}}. Can be
@@ -18,6 +18,10 @@ variance defined by this parameter.}
 \item{denCutoffLow}{lower density cutoff.}
 
 \item{denCutoffHigh}{upper density cutoff.}
+
+\item{pc}{when set the function will compute the area in the first \code{pcs}
+components instead of using the cumulative variance percentage.
+(overrides \code{varCutoff}).}
 
 \item{sigName}{?}
 }

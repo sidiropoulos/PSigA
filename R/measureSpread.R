@@ -12,6 +12,9 @@
 #' @param varCutoff cumulative variance cutoff. The function will measure the
 #' area under the components that describe more or equal portion of the
 #' variance defined by this parameter.
+#' @param pc when set the function will compute the area in the first \code{pcs}
+#' components instead of using the cumulative variance percentage.
+#' (overrides \code{varCutoff}).
 #' @param denCutoffLow lower density cutoff.
 #' @param denCutoffHigh upper density cutoff.
 #' @param sigName ?
@@ -23,15 +26,20 @@
 #' @export measureSpread
 
 measureSpread <- function( sigpca, varCutoff = 0.75, denCutoffLow = 0.005,
-                           denCutoffHigh = 0.05, sigName = "NA" )
+                           denCutoffHigh = 0.05, pc = NULL, sigName = "NA" )
 {
 
-    #Get the proportion of the variance in the PCA's
+    #Get the proportion of the variance in the PC's
     propVar <- sigpca$sdev**2 / sum( sigpca$sdev**2 )
 
-    #Find for which component the cumulative proportion of the variance is
-    #above the cutoff
-    idx <- which(cumsum(sigpca$sdev**2) / sum(sigpca$sdev**2) > varCutoff)[1]
+    if (!is.null(pc)) {
+        idx <- pc
+    } else {
+
+        #Find for which component the cumulative proportion of the variance is
+        #above the cutoff
+        idx <- which(cumsum(sigpca$sdev**2) / sum(sigpca$sdev**2) > varCutoff)[1]
+    }
 
     if (idx == 1){
         densities <- density(sigpca$x[, 1], bw = "SJ")
@@ -39,7 +47,6 @@ measureSpread <- function( sigpca, varCutoff = 0.75, denCutoffLow = 0.005,
     }else
         densities <- apply( sigpca$x[ , 1:idx ], 2, density, bw = "SJ" )
 
-    areaProd <- 1
     areaSum <- 0
 
     for ( i in 1:idx )
