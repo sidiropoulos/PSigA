@@ -1,27 +1,50 @@
 #' @title PCA based on a given gene-signature
 #'
 #' @description \code{signaturePCA} performs principal component analysis on
-#' the given data matrix and gene-signature and
-#' returns the results as an object of class \code{prcomp}.
+#' the given data matrix and gene-signature and returns the results as an object
+#' of class \code{prcomp}.
 #'
 #' @author Nikos Sidiropoulos
 #'
-#' @param genes Character vector with the gene identifiers
+#' @param signature character vector with the signature's gene identifiers
 #' @param data Data matrix with gene expression values
-#' @param db Microarray Platform
 #' @param center a logical value indicating whether the variables should be
 #' shifted to be zero centered. See \code{\link{prcomp}} for more details.
 #' @param scale a logical value indicating whether the variables should be
 #' scaled to have unit variance before the analysis takes place. See
 #' \code{prcomp} for more details.
+#' @param keytype the keytype that matches the gene identifier format provided
+#' by \code{genes}. See a list with valid inputs in the \link{details} below.
+#' (Default = "SYMBOL")
+#' @param db Microarray Platform. Required if \code{format != "PROBEID"}.
 #' @param ... arguments passed to \code{prcomp}.
 #'
 #' @export signaturePCA
-signaturePCA <- function(genes, data, db, center = TRUE, scale = FALSE, ...) {
+signaturePCA <- function(signature, data, center = TRUE, scale = FALSE,
+                         keytype = c("SYMBOL", "PROBEID", "ENTREZID"),
+                         db = NULL, ...) {
 
-  #Convert geneID to probeID
-  keys <- reduceProbes( gene2probe(genes, db), data[])
-  prcomp(t(data[keys,]), center = center, scale = scale, ...)
+    keytype <- match.arg(keytype)
+
+    if (keytype != "PROBEID") {
+
+        if (is.null(db))
+            stop("Please specify microarray platform using the 'db' argument.")
+
+        #Convert to probeID
+        keys <- gene2probe(signature, db, keytype)
+
+        #check if signature genes mapped to multiple probes and remove
+        #duplicates
+        if (any(duplicated(keys[, keytype])))
+            keys <- reduceProbes( gene2probe(signature, db, keytype), data[])
+        else
+            keys <- keys$PROBEID
+    }
+    else
+        keys <- signature
+
+    prcomp(t(data[keys,]), center = center, scale = scale, ...)
 }
 
 #' @title  Convert gene identifiers to microarray probeID
@@ -32,9 +55,9 @@ signaturePCA <- function(genes, data, db, center = TRUE, scale = FALSE, ...) {
 #' @author Nikos Sidiropoulos
 #'
 #' @param genes List of gene identifiers to be converted
-#' @param db Microarray platform. See details for a list of valid inputs
-#' @param keytype the keytype that matches the keys used in the \code{gene}
-#' parameter. See a list with valid inputs in the details below.
+#' @param db Microarray platform. See \link{details} for a list of valid inputs.
+#' @param keytype the keytype that matches the keys used in the \code{genes}
+#' parameter. See a list with valid inputs in the \link{details} below.
 #' (Default = "SYMBOL")
 #'
 #' @return keys a data frame of possible values
@@ -43,7 +66,10 @@ signaturePCA <- function(genes, data, db, center = TRUE, scale = FALSE, ...) {
 #' @export gene2probe
 gene2probe <- function(genes, db, keytype = "SYMBOL") {
 
-#    keys <- try(suppressWarnings(AnnotationDbi::select( x = get(db), keys = genes, columns = "PROBEID" , keytype)), TRUE)
+#     keys <- try(suppressWarnings(AnnotationDbi::select( x = get(db),
+#                                                         keys = genes,
+#                                                         columns = "PROBEID",
+#                                                         keytype)), TRUE)
 
     keys <- suppressMessages(AnnotationDbi::select( x = get(db), keys = genes,
                                                     columns = "PROBEID",
@@ -55,7 +81,7 @@ gene2probe <- function(genes, db, keytype = "SYMBOL") {
 #     }
 
     #Remove genes that didn't map to any probes
-    keys <- keys[ ! is.na(keys[,2]), ]
+    keys <- keys[ ! is.na(keys$PROBEID), ]
 
     keys
 
@@ -78,12 +104,14 @@ reduceProbes <- function(keys, data) {
 
   #if ( is.null( keys ) ) { return(NULL) }
 
+  colnames(keys) <- c("GENE", "PROBEID")
+
   #Initialize vector of probes to keep
   kept <- character(0)
 
-  for (gene in unique(keys[,1]) ) {
+  for (gene in unique(keys$GENE) ) {
 
-    geneProbes <- keys[ keys[,1] == gene, 2]
+    geneProbes <- keys$PROBEID[ keys$GENE == gene]
 
     # Find the probe with the highest mean expression
     keep <- names( which.max(abs( apply( data[ geneProbes, ], 1, mean) ) ) )
