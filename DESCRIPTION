@@ -1,8 +1,9 @@
 Package: SigPCA
 Type: Package
-Title: R package that scores gene-signatures based on features in the signature PCA space
+Title: R package that scores gene-signatures based on features in the signature
+    PCA space
 Version: 0.99.0
-Date: 2015-08-20
+Date: 2015-10-06
 Authors@R: c(person("Nikos", "Sidiropoulos",
     role=c("cre", "aut"), email="nikos.sidiro@gmail.com"), person("Frederik Otzen",
     "Bagger", role="aut", email="frederik@binf.ku.dk"), person("Nicolas", "Rapin",
