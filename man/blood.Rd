@@ -5,8 +5,7 @@
 \alias{blood}
 \title{Bone marrow samples from 60 healthy individuals}
 \format{A data frame with 54675 rows (probes) and 60 columns. The column
-names describe the blood cell type of
-the respective sample.}
+names describe the blood cell type of the respective sample.}
 \usage{
 data(blood)
 }

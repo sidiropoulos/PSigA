@@ -47,19 +47,59 @@ NULL
 #'
 #' @usage data(blood)
 #' @format A data frame with 54675 rows (probes) and 60 columns. The column
-#' names describe the blood cell type of
-#' the respective sample.
+#' names describe the blood cell type of the respective sample.
 "blood"
 
-#' 12,617 gene signatures
+#' Molecular Signature DataBase
 #'
-#' Gene pathways were obtained from Molecular Signature Database (MSigDB),
-#' Connectivity Map (cmap) and the signatures by Rapin et. al.
+#' 10,348 gene pathways obtained from Molecular Signature Database
+#' (MSigDB v5.0).
 #'
-#' @usage data(sigdb)
-#' @format A list with 12617 entries, each one representing a gene signature.
-#' The name of each list entry represents the signature's name.
+#' @usage data(MSigDb)
+#' @format An object of type list with 10,348 entries, each one representing a
+#' gene signature. The name of each list entry represents the signature's name.
+#' Additionally, \code{MSigDB} entries contain the following collection
+#' identifiers:
+#' \itemize{
+#'  \item{H: hallmark gene sets (50)}
+#'  \item{C1: positional gene sets (326)}
+#'  \item{C2: curated gene sets (4725)}
+#'  \item{C3: motif gene sets (836)}
+#'  \item{C4: computational gene sets (858)}
+#'  \item{C5: GO gene sets (1454)}
+#'  \item{C6: oncogenic signatures (189)}
+#'  \item{C7: immunologic signatures (1910)}
+#' }
+#'
 #' @source \url{http://www.broadinstitute.org/gsea/msigdb/index.jsp}
-#' @source \url{https://www.broadinstitute.org/cmap/}
-#' @source \url{http://www.bloodjournal.org/cgi/pmidlookup?view=long&pmid=24363398}
-"sigdb"
+"MSigDB"
+
+#' Drug SIGnature DataBase
+#'
+#' 22,528 gene pathways obtained from Drug SIGnature DataBase (DSigDB v1.0).
+#'
+#' @usage data(DSigDb)
+#' @format An object of type list with 22,528 entries, each one representing a
+#' gene signature. The name of each list entry represents the signature's name.
+#' Additionally, \code{MSigDB} entries contain the following collection
+#' identifiers:
+#' \itemize{
+#'  \item{D1: FDA Approved (1202)}
+#'  \item{D2: Kinase Inhibitors (1220)}
+#'  \item{D3: Perturbagen Signatures (1998)}
+#'  \item{D4: Computational Drug Signatures (18107)}
+#' }
+#'
+#' @source \url{http://tanlab.ucdenver.edu/DSigDB/DSigDBv1.0/}
+"DSigDB"
+
+#' Rapin et al. signatures
+#'
+#' 24 gene pathways obtained from Rapin et al. (2014).
+#'
+#' @usage data(RAPIN)
+#' @format An object of type list with 24 entries, each one representing a
+#' gene signature. The name of each list entry represents the signature's name.
+#'
+#' @source \url{http://www.bloodjournal.org/content/123/6/894}
+"RAPIN"
