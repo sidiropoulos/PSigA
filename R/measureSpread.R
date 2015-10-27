@@ -26,7 +26,8 @@
 #' @export measureSpread
 
 measureSpread <- function( sigpca, varCutoff = 0.75, denCutoffLow = 0.005,
-                           denCutoffHigh = 0.05, pc = NULL, sigName = "NA" )
+                           denCutoffHigh = 0.05, pc = NULL, sigName = "NA",
+                           categoryID = "NA")
 {
 
     #Get the proportion of the variance in the PC's
@@ -64,5 +65,5 @@ measureSpread <- function( sigpca, varCutoff = 0.75, denCutoffLow = 0.005,
 
         areaSum <- areaSum + scaledArea
     }
-    c( sigName, idx, areaSum )
+    c( sigName, categoryID, idx, areaSum )
 }
