@@ -9,10 +9,10 @@ gene2probe(genes, db, keytype = "SYMBOL")
 \arguments{
 \item{genes}{List of gene identifiers to be converted}
 
-\item{db}{Microarray platform. See details for a list of valid inputs}
+\item{db}{Microarray platform. See \link{details} for a list of valid inputs.}
 
-\item{keytype}{the keytype that matches the keys used in the \code{gene}
-parameter. See a list with valid inputs in the details below.
+\item{keytype}{the keytype that matches the keys used in the \code{genes}
+parameter. See a list with valid inputs in the \link{details} below.
 (Default = "SYMBOL")}
 }
 \value{
