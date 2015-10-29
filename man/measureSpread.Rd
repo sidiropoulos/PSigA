@@ -5,7 +5,7 @@
 \title{Measures the area under the density curve on PC space}
 \usage{
 measureSpread(sigpca, varCutoff = 0.75, denCutoffLow = 0.005,
-  denCutoffHigh = 0.05, pc = NULL, sigName = "NA")
+  denCutoffHigh = 0.05, pc = NULL, sigName = "NA", categoryID = "NA")
 }
 \arguments{
 \item{sigpca}{signature PCA. Object of class \code{\link{prcomp}}. Can be

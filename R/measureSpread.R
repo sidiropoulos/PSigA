@@ -17,7 +17,6 @@
 #' (overrides \code{varCutoff}).
 #' @param denCutoffLow lower density cutoff.
 #' @param denCutoffHigh upper density cutoff.
-#' @param sigName ?
 #'
 #' @return a data frame with columns: Signature Name, Number of principal
 #' components used, Density area.
@@ -25,10 +24,13 @@
 #' @import caTools
 #' @export measureSpread
 
-measureSpread <- function( sigpca, varCutoff = 0.75, denCutoffLow = 0.005,
-                           denCutoffHigh = 0.05, pc = NULL, sigName = "NA",
-                           categoryID = "NA")
+measureSpread <- function(data, signature, genes, varCutoff = 0.75,
+                          denCutoffLow = 0.005, denCutoffHigh = 0.05,
+                          pc = NULL, custom = FALSE)
 {
+
+
+    sigpca <- prcomp(t(data[genes %in% signature$genes, ]), center = TRUE, scale = FALSE)
 
     #Get the proportion of the variance in the PC's
     propVar <- sigpca$sdev**2 / sum( sigpca$sdev**2 )
@@ -65,5 +67,8 @@ measureSpread <- function( sigpca, varCutoff = 0.75, denCutoffLow = 0.005,
 
         areaSum <- areaSum + scaledArea
     }
-    c( sigName, categoryID, idx, areaSum )
+    d <- data.frame(signature$name, signature$collectionId, as.integer(idx),
+               as.double(areaSum))
+    colnames(d) <- c("Signature", "Collection", "Idx", "Area")
+    d
 }
