@@ -1,7 +1,6 @@
-Package: SigPCA
+Package: PSigA
 Type: Package
-Title: R package that scores gene-signatures based on features in the signature
-    PCA space
+Title: A gene-signature ranking method based on sample density in PCA space
 Version: 0.99.0
 Date: 2015-10-06
 Authors@R: c(person("Nikos", "Sidiropoulos",
