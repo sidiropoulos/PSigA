@@ -4,10 +4,9 @@
 \alias{sigBiplot}
 \title{Produces a bibplot of the selected signature's PCA}
 \usage{
-sigBiplot(sigPCA, pcs = c(1, 2), groups = NULL, genenames = TRUE,
-  labels = NULL, db = "hgu133plus2.db", main = "Signature",
-  obs.size = 2, var.size = 3, var.scaled = FALSE, palette = "Paired",
-  ...)
+sigBiplot(sigPCA, pcs = c(1, 2), groups = NULL, labels = NULL,
+  main = "Signature", obs.size = 2, var.size = 3, var.scaled = FALSE,
+  palette = "Paired", ...)
 }
 \arguments{
 \item{sigPCA}{a \code{\link{prcomp}} object, preferrably produced using
@@ -18,12 +17,7 @@ sigBiplot(sigPCA, pcs = c(1, 2), groups = NULL, genenames = TRUE,
 \item{groups}{optional factor variable indicating the groups that the
 observations belong to. If provided the points will be colored accordingly}
 
-\item{genenames}{when TRUE, gene symbols are used instead of probe ids as
-variable names}
-
 \item{labels}{optional vector of labels for the observations}
-
-\item{db}{microarray platform}
 
 \item{main}{plot title}
 

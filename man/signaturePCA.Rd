@@ -4,8 +4,7 @@
 \alias{signaturePCA}
 \title{PCA based on a given gene-signature}
 \usage{
-signaturePCA(signature, data, center = TRUE, scale = FALSE,
-  keytype = c("SYMBOL", "PROBEID", "ENTREZID"), db = NULL, ...)
+signaturePCA(signature, data, center = TRUE, scale = FALSE, ...)
 }
 \arguments{
 \item{signature}{character vector with the signature's gene identifiers}
@@ -18,12 +17,6 @@ shifted to be zero centered. See \code{\link{prcomp}} for more details.}
 \item{scale}{a logical value indicating whether the variables should be
 scaled to have unit variance before the analysis takes place. See
 \code{prcomp} for more details.}
-
-\item{keytype}{the keytype that matches the gene identifier format provided
-by \code{genes}. See a list with valid inputs in the \link{details} below.
-(Default = "SYMBOL")}
-
-\item{db}{Microarray Platform. Required if \code{format != "PROBEID"}.}
 
 \item{...}{arguments passed to \code{prcomp}.}
 }

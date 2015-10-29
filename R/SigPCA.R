@@ -1,13 +1,13 @@
-#' SigPCA: A gene-signature based exploratory tool for gene expression data.
+#' PSigA: A gene-signature ranking method based on sample density in PCA space.
 #'
-#' The SigPCA package provides a set of functions to perform Principal Component
-#' analysis based on genetic pathways. Moreover SigPCA incorporates an algorithm
+#' The PSigA package provides a set of functions to perform Principal Component
+#' analysis based on genetic pathways. Moreover PSigA incorporates an algorithm
 #' to measure the spread of the data in the PCA space and rank the
 #' gene-signatures based on their ability to split the data in distinct
 #' entities.
 #'
 #' @docType package
-#' @name SigPCA
+#' @name PSigA
 NULL
 
 #' Microarray data of 183 AML patients

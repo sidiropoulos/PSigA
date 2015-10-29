@@ -10,9 +10,6 @@
 #' @param groups optional factor variable indicating the groups that the
 #' observations belong to. If provided the points will be colored accordingly
 #' @param labels optional vector of labels for the observations
-#' @param genenames when TRUE, gene symbols are used instead of probe ids as
-#' variable names
-#' @param db microarray platform
 #' @param obs.size size of the points for the observations
 #' @param var.size size of the text for the variables
 #' @param var.scaled logical value. When set to TRUE the variable text size is
@@ -28,14 +25,9 @@
 #' @import ggbiplot
 #' @export
 
-sigBiplot <- function(sigPCA, pcs = c(1,2), groups = NULL, genenames = TRUE,
-                      labels = NULL, db = "hgu133plus2.db", main = "Signature",
-                      obs.size = 2, var.size = 3, var.scaled = FALSE,
-                      palette = "Paired", ...) {
-
-    if (genenames)
-        rownames(sigPCA$rotation) <- probe2geneMap(rownames(sigPCA$rotation),
-                                                   db)
+sigBiplot <- function(sigPCA, pcs = c(1,2), groups = NULL, labels = NULL,
+                      main = "Signature", obs.size = 2, var.size = 3,
+                      var.scaled = FALSE, palette = "Paired", ...) {
 
     if (var.scaled) {
         norms <- measureLoadings(sigPCA)
