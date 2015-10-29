@@ -3,23 +3,22 @@ Type: Package
 Title: A gene-signature ranking method based on sample density in PCA space
 Version: 0.99.0
 Date: 2015-10-06
-Authors@R: c(person("Nikos", "Sidiropoulos",
-    role=c("cre", "aut"), email="nikos.sidiro@gmail.com"), person("Frederik Otzen",
-    "Bagger", role="aut", email="frederik@binf.ku.dk"), person("Nicolas", "Rapin",
-    role="aut", email="nicolas.rapin@finsenlab.dk"))
+Authors@R: c(person("Nikos", "Sidiropoulos", role=c("cre", "aut"),
+    email="nikos.sidiropoulos@bric.ku.dk"), person("Frederik Otzen", "Bagger",
+    role="aut", email="frederik@ebi.ac.uk"), person("Nicolas", "Rapin",
+    role="aut", email="nicolas.rapin@bric.ku.dk"))
 Description: More about what it does (maybe more than one line). Maybe 2 lines?
 Depends:
     R (>= 3.2.1),
-    hgu133plus2.db(>= 3.1.3)
 Imports:
-    AnnotationDbi(>= 1.30.1),
     caTools(>= 1.17.1),
     ggbiplot(>= 0.55),
     ggplot2(>= 1.0.1),
     doMC(>= 1.3.3),
     foreach(>= 1.4.2)
 Suggests:
-    devtools(>= 1.8.0),
-    BiocGenerics(>= 0.10.0),
+    devtools,
+    BiocGenerics,
+    BiocViews
 License: GPL (>=2)
 LazyData: true
