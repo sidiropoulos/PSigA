@@ -4,13 +4,10 @@
 \alias{measureSpread}
 \title{Measures the area under the density curve on PC space}
 \usage{
-measureSpread(sigpca, varCutoff = 0.75, denCutoffLow = 0.005,
-  denCutoffHigh = 0.05, pc = NULL, sigName = "NA", categoryID = "NA")
+measureSpread(data, signature, genes, varCutoff = 0.75,
+  denCutoffLow = 0.005, denCutoffHigh = 0.05, pc = NULL, custom = FALSE)
 }
 \arguments{
-\item{sigpca}{signature PCA. Object of class \code{\link{prcomp}}. Can be
-produced with \code{\link{signaturePCA}}.}
-
 \item{varCutoff}{cumulative variance cutoff. The function will measure the
 area under the components that describe more or equal portion of the
 variance defined by this parameter.}
@@ -23,7 +20,8 @@ variance defined by this parameter.}
 components instead of using the cumulative variance percentage.
 (overrides \code{varCutoff}).}
 
-\item{sigName}{?}
+\item{sigpca}{signature PCA. Object of class \code{\link{prcomp}}. Can be
+produced with \code{\link{signaturePCA}}.}
 }
 \value{
 a data frame with columns: Signature Name, Number of principal
