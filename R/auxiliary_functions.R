@@ -18,5 +18,5 @@
 #' @export signaturePCA
 signaturePCA <- function(signature, data, center = TRUE, scale = FALSE, ...){
 
-    prcomp(t(data[keys,]), center = center, scale = scale, ...)
+    prcomp(t(data[signature,]), center = center, scale = scale, ...)
 }
