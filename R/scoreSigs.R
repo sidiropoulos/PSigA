@@ -5,16 +5,23 @@ scoreSigs <- function(data, genes = NULL, signatures, parsed = FALSE, varCutoff 
     if (!parsed)
         data <- readSamples(data, genes)
 
-    r <- mclapply(a, measureSpread, data, varCutoff, denCutoffLow, denCutoffHigh, pc, show.all)
-    r <- do.call(rbind, r)
-
+    scores <- do.call(rbind, mclapply(signatures, measureSpread, data,
+                                      varCutoff, denCutoffLow, denCutoffHigh,
+                                      pc, show.all))
     if (show.all)
-        colnames(r) <- c("Signature Size", "PCs", "Density area")
+        colnames(scores) <- c("Signature Size", "PCs", "Density")
     else
-        colnames(r) <- c("Density area")
+        colnames(scores) <- c("Density")
+
+    scores <- as.data.frame(scores)
+
+    #sort scores based on density
+    s <- sort(scores$Density, decreasing = TRUE, index.return = TRUE)
+
+    scores <- scores[s$ix, ]
 
     if (parsed)
-        as.data.frame(r)
+        scores
     else
-        list(data = data, scores = r)
+        list(data = data, scores = scores)
 }
