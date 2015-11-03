@@ -84,19 +84,19 @@ sigPlot <- function(sigPCA, pcs = c(1,2), groups = NULL, text = FALSE,
 
     data <- data.frame(groups, sigPCA$x[, pcs])
 
-    xdata <- paste("PC", pcs[1], sep = "")
-    ydata <- paste("PC", pcs[2], sep = "")
-
+    colnames(data) <- c("groups", "x", "y")
+    xlab <- paste("PC", pcs[1], sep = "")
+    ylab <- paste("PC", pcs[2], sep = "")
 
     if (gFlag) {
-        p <- ggplot(data, aes(x = get(xdata), y = get(ydata), label = groups,
+        p <- ggplot(data, aes(x = x, y = y, label = groups,
                               colour = factor(groups)))
         p <- p + scale_color_brewer(palette = palette) + labs(colour='Groups')
     } else {
-        p <- ggplot(data, aes(x = get(xdata), y = get(ydata)))
+        p <- ggplot(data, aes(x = x, y = y))
     }
 
-    p <- p + xlab(xdata) + ylab(ydata) + ggtitle(main)
+    p <- p + xlab(xlab) + ylab(ylab) + ggtitle(main)
 
     if (text){
         p <- p + geom_text(show_grid = FALSE, size = 4)
