@@ -19,6 +19,6 @@ Imports:
 Suggests:
     devtools,
     BiocGenerics,
-    BiocViews
+    BiocStyle
 License: GPL (>=2)
 LazyData: true
