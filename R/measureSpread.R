@@ -18,19 +18,20 @@
 #' @param denCutoffLow lower density cutoff.
 #' @param denCutoffHigh upper density cutoff.
 #'
-#' @return a data frame with columns: Signature Name, Number of principal
-#' components used, Density area.
+#' @return density area. If \code{show.all = TRUE} it returns a vector with the
+#' number of genes used in the signature, the number of principal
+#' components used and the density area.
 #'
 #' @import caTools
 #' @export measureSpread
 
-measureSpread <- function(data, signature, genes, varCutoff = 0.75,
+measureSpread <- function(signature, data, varCutoff = 0.75,
                           denCutoffLow = 0.005, denCutoffHigh = 0.05,
-                          pc = NULL, custom = FALSE)
+                          pc = NULL, show.all = FALSE)
 {
-
-
-    sigpca <- prcomp(t(data[genes %in% signature$genes, ]), center = TRUE, scale = FALSE)
+    inSet <- signature %in% rownames(data)
+    sigpca <- prcomp(t(data[signature[inSet], ]), center = TRUE,
+                     scale = FALSE)
 
     #Get the proportion of the variance in the PC's
     propVar <- sigpca$sdev**2 / sum( sigpca$sdev**2 )
@@ -67,8 +68,8 @@ measureSpread <- function(data, signature, genes, varCutoff = 0.75,
 
         areaSum <- areaSum + scaledArea
     }
-    d <- data.frame(signature$name, signature$collectionId, as.integer(idx),
-               as.double(areaSum))
-    colnames(d) <- c("Signature", "Collection", "Idx", "Area")
-    d
+    if (show.all)
+        c(sum(inSet), idx, areaSum)
+    else
+        areaSum
 }
