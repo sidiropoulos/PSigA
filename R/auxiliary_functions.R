@@ -4,8 +4,6 @@
 #' the given data matrix and gene-signature and returns the results as an object
 #' of class \code{prcomp}.
 #'
-#' @author Nikos Sidiropoulos
-#'
 #' @param signature character vector with the signature's gene identifiers
 #' @param data Data matrix with gene expression values
 #' @param center a logical value indicating whether the variables should be

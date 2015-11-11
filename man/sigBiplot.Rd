@@ -40,7 +40,4 @@ signature PCA biplot
 \description{
 To do
 }
-\author{
-Nikos Sidiropoulos
-}
 

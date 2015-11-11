@@ -28,7 +28,4 @@ based on \code{groups} parameter.}
 \description{
 To do..
 }
-\author{
-Nikos Sidiropoulos
-}
 

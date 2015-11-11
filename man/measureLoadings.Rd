@@ -23,7 +23,4 @@ Measures the Euclidean Norm of the PCA loadings (rotation
 matrix) of the first \code{n} principal components, where the cumulative
 variance on the \code{n}-th principal component is above a cutoff.
 }
-\author{
-Nikos Sidiropoulos
-}
 

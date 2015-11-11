@@ -3,8 +3,6 @@
 #' matrix) of the first \code{n} principal components, where the cumulative
 #' variance on the \code{n}-th principal component is above a cutoff.
 #'
-#' @author Nikos Sidiropoulos
-#'
 #' @param pca \code{\link{prcomp}} object.
 #' @param varCutoff cumulative variance cutoff.
 #' @param pcs when set the function will compute the Euclidean norm for

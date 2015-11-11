@@ -2,8 +2,6 @@
 #'
 #' @description To do
 #'
-#' @author Nikos Sidiropoulos
-#'
 #' @param sigPCA a \code{\link{prcomp}} object, preferrably produced using
 #' \code{\link{signaturePCA}}
 #' @param pcs which PCs to plot. default: 1,2
@@ -54,8 +52,6 @@ sigBiplot <- function(sigPCA, pcs = c(1,2), groups = NULL, labels = NULL,
 #' @title Signature PCA plot
 #'
 #' @description To do..
-#'
-#' @author Nikos Sidiropoulos
 #'
 #' @param sigPCA a \code{\link{prcomp}} object, preferrably produced using
 #' \code{\link{signaturePCA}}

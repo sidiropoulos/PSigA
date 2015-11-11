@@ -25,7 +25,4 @@ scaled to have unit variance before the analysis takes place. See
 the given data matrix and gene-signature and returns the results as an object
 of class \code{prcomp}.
 }
-\author{
-Nikos Sidiropoulos
-}
 
