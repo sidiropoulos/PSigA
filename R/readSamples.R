@@ -10,24 +10,26 @@
 #' @export
 readSamples <- function(data, genes) {
 
+    #find and remove NA values
     nonNAgenes <- which(!is.na(genes))
     data <- data[nonNAgenes,]
-
     genes <- genes[nonNAgenes]
 
-    a<- mclapply(unique(genes), .maxMedian, data, genes)
-
-    d <- do.call(rbind, a)
+    #select the probe/isoform with the highest median expression
+    d <- do.call(rbind, mclapply(unique(genes), .maxMedian, data, genes))
 
     rownames(d) <- unique(genes)
     d
 }
 
-.maxMedian <- function(gene, data, genes) {
+.maxMedian <- function(targetGene, data, genes) {
 
-    data <- data[genes == gene, ]
-    maxGene <- which.max(abs(apply(data, 1, median)))
-    data[maxGene, ]
+    match <- genes == targetGene
+    if (sum(match) == 1){
+        data[match,]
+    }else {
+        maxGene <- which.max(abs(apply(data[match,], 1, median)))
+        data[maxGene, ]
+    }
 
 }
-
