@@ -28,6 +28,10 @@ measureSpread <- function(signature, data, varCutoff = 0.75,
                           pc = NULL, show.all = FALSE)
 {
     inSet <- signature %in% rownames(data)
+
+    if (sum(inSet) == 0)
+        return("NA")
+
     sigpca <- prcomp(t(data[signature[inSet], ]), center = TRUE,
                      scale = FALSE)
 
@@ -65,9 +69,12 @@ measureSpread <- function(signature, data, varCutoff = 0.75,
         scaledArea <- area * propVar[ i ]
 
         areaSum <- areaSum + scaledArea
+
+        #normalize for signature length
+        areaSum <- areaSum / log(sum(inSet))
     }
     if (show.all)
-        c(sum(inSet), idx, areaSum)
+        c(areaSum, sum(inSet), idx)
     else
         areaSum
 }
