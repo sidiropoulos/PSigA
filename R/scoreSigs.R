@@ -1,6 +1,18 @@
+#' @title Score gene signatures based on PCA density
+#'
+#' @param data data frame of matrix with gene expression values where rows
+#' represent genes and columns represent samples.
+#' @param parsed logical.
+#' @param pcs when set the function will compute the Euclidean norm for
+#' selected principal components instead of using the first \code{n}
+#' (overrides \code{varCutoff}). Vector of length 2.
+#'
+#' @return norms a vector with the Euclidean Norm of all the loadings.
+#'
 #' @export
-scoreSigs <- function(data, genes = NULL, signatures, parsed = FALSE, varCutoff = 0.75,
-                      denCutoffLow = 0.005, denCutoffHigh = 0.02, pc = NULL, show.all = FALSE){
+scoreSigs <- function(data, parsed = FALSE, genes = (if (parsed) NULL),
+                      signatures,  varCutoff = 0.75, denCutoffLow = 0.005,
+                      denCutoffHigh = 0.02, pc = NULL, show.all = FALSE){
 
     if (!parsed)
         data <- readSamples(data, genes)
@@ -8,17 +20,23 @@ scoreSigs <- function(data, genes = NULL, signatures, parsed = FALSE, varCutoff 
     scores <- do.call(rbind, mclapply(signatures, measureSpread, data,
                                       varCutoff, denCutoffLow, denCutoffHigh,
                                       pc, show.all))
-    if (show.all)
-        colnames(scores) <- c("Signature Size", "PCs", "Density")
-    else
-        colnames(scores) <- c("Density")
 
-    scores <- as.data.frame(scores)
+
+    NAsigs <- scores[,1] == "NA"
+    if (sum(NAsigs) > 0) {
+        message(paste("Removed", sum(NAsigs), "signature(s)"))
+        scores <- scores[ which(!NAsigs), ]
+    }
 
     #sort scores based on density
-    s <- sort(scores$Density, decreasing = TRUE, index.return = TRUE)
+    s <- sort(scores[,1], decreasing = TRUE, index.return = TRUE)
 
-    scores <- scores[s$ix, ]
+    scores <- as.data.frame(scores[s$ix, ])
+
+    if (show.all)
+        colnames(scores) <- c("Density", "Size", "PCs")
+    else
+        colnames(scores) <- c("Density")
 
     if (parsed)
         scores
