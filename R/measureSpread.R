@@ -70,9 +70,11 @@ measureSpread <- function(signature, data, varCutoff = 0.75,
 
         areaSum <- areaSum + scaledArea
 
-        #normalize for signature length
-        areaSum <- areaSum / log(sum(inSet))
     }
+
+    #normalize for signature length
+    areaSum <- areaSum / log(sum(inSet))
+
     if (show.all)
         c(areaSum, sum(inSet), idx)
     else
