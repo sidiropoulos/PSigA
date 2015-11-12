@@ -28,15 +28,16 @@ scoreSigs <- function(data, parsed = FALSE, genes = (if (parsed) NULL),
         scores <- scores[ which(!NAsigs), ]
     }
 
-    #sort scores based on density
-    s <- sort(scores[,1], decreasing = TRUE, index.return = TRUE)
-
-    scores <- as.data.frame(scores[s$ix, ])
-
-    if (show.all)
+    if (show.all) {
+        scores <- as.data.frame(scores, stringsAsFactors = FALSE)
         colnames(scores) <- c("Density", "Size", "PCs")
-    else
+        s <- sort(scores$Density, decreasing = TRUE, index.return = TRUE)
+        scores <- scores[s$ix, ]
+    }else {
+        s <- sort(scores, decreasing = TRUE, index.return = TRUE)
+        scores <- as.data.frame(scores[s$ix], stringsAsFactors = FALSE)
         colnames(scores) <- c("Density")
+    }
 
     if (parsed)
         scores
