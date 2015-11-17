@@ -4,8 +4,8 @@
 \alias{measureSpread}
 \title{Measures the area under the density curve on PC space}
 \usage{
-measureSpread(data, signature, genes, varCutoff = 0.75,
-  denCutoffLow = 0.005, denCutoffHigh = 0.05, pc = NULL, custom = FALSE)
+measureSpread(signature, data, varCutoff = 0.75, denCutoffLow = 0.005,
+  denCutoffHigh = 0.05, pc = NULL, show.all = FALSE)
 }
 \arguments{
 \item{varCutoff}{cumulative variance cutoff. The function will measure the
@@ -24,16 +24,14 @@ components instead of using the cumulative variance percentage.
 produced with \code{\link{signaturePCA}}.}
 }
 \value{
-a data frame with columns: Signature Name, Number of principal
-components used, Density area.
+density area. If \code{show.all = TRUE} it returns a vector with the
+number of genes used in the signature, the number of principal
+components used and the density area.
 }
 \description{
 \code{measureSpread} integrates the density curves of the first
 \emph{n} principle components of a \code{\link{signaturePCA}}, where \emph{n}
 is component where the cumulative variance is above a user specified cutoff.
 Much more to be written...
-}
-\author{
-Nikos Sidiropoulos
 }
 
