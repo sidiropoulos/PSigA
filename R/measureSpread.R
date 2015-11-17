@@ -29,7 +29,7 @@ measureSpread <- function(signature, data, varCutoff = 0.75,
 {
     inSet <- signature %in% rownames(data)
 
-    if (sum(inSet) == 0)
+    if (sum(inSet) < 3)
         return("NA")
 
     sigpca <- prcomp(t(data[signature[inSet], ]), center = TRUE,
