@@ -19,7 +19,7 @@ scoreSigs <- function(data, parsed = FALSE, genes = (if (parsed) NULL),
 
     scores <- do.call(rbind, mclapply(signatures, measureSpread, data,
                                       varCutoff, denCutoffLow, denCutoffHigh,
-                                      pc, show.all))
+                                      pc, show.all, mc.preschedule = FALSE))
 
 
     NAsigs <- scores[,1] == "NA"
