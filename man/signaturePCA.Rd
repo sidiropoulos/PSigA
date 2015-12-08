@@ -9,7 +9,9 @@ signaturePCA(signature, data, center = TRUE, scale = FALSE, ...)
 \arguments{
 \item{signature}{character vector with the signature's gene identifiers}
 
-\item{data}{Data matrix with gene expression values}
+\item{data}{Gene expression matrix where rownames correspond to unique gene
+identifiers (HGNC format \link{http://www.genenames.org}) and columns
+correspond to samples.}
 
 \item{center}{a logical value indicating whether the variables should be
 shifted to be zero centered. See \code{\link{prcomp}} for more details.}
