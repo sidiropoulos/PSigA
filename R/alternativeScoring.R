@@ -1,3 +1,4 @@
+#' @export
 bicScore <- function(signature, data, G){
 
     inSet <- signature %in% rownames(data)
@@ -13,6 +14,7 @@ bicScore <- function(signature, data, G){
     c(mod$bic, mod$G, mod$modelName, sum(inSet))
 }
 
+#' @export
 kmeansScore <- function(signature, data, k){
 
     inSet <- signature %in% rownames(data)

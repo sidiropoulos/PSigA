@@ -1,3 +1,4 @@
+#' @export
 peakDistance <- function(signature, data, pc = 2, adjust = 3/4,
                            show.all = FALSE, scale = FALSE, denCutoffLow = 0.005)
 {
