@@ -1,6 +1,8 @@
 #' @import MASS
 #' @export
 peakDistance2d <- function(signature, data, threshold, n = 200){
+
+    #
     inSet <- signature %in% rownames(data)
 
     if (sum(inSet) < 3)
@@ -10,14 +12,16 @@ peakDistance2d <- function(signature, data, threshold, n = 200){
                      scale = FALSE)
 
     d <- kde2d(sigpca$x[,1], sigpca$x[,2], n = n)
-    peaks <- find2Dpeaks(d, threshold)
+    peaks <- .find2Dpeaks(d, threshold)
 
     if (length(peaks) <= 1)
         return(0)
     if (nrow(peaks) < 2)
         return(0)
 
-    maxPeaks <- peaks[sort(d$z[peaks], decreasing = TRUE, index.return = TRUE)$ix[1:2], ]
+    maxPeaks <- peaks[sort(d$z[peaks], decreasing = TRUE,
+                           index.return = TRUE)$ix[1:2], ]
+
     dist <- norm(matrix(c(d$x[maxPeaks[,1]],d$y[maxPeaks[,2]]), nrow = 2))
 
     c(dist, sum(inSet))
