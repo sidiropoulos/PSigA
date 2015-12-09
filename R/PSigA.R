@@ -40,16 +40,6 @@ NULL
 #' @source \url{https://tcga-data.nci.nih.gov/tcga/}
 "AML_meta"
 
-#' Bone marrow samples from 60 healthy individuals
-#'
-#' Gene expression data of 60 FACS sorted blood samples using the Affymetrix
-#' HGU 133 plus2 platform.
-#'
-#' @usage data(blood)
-#' @format A data frame with 54675 rows (probes) and 60 columns. The column
-#' names describe the blood cell type of the respective sample.
-"blood"
-
 #' Molecular Signature DataBase
 #'
 #' 10,348 gene pathways obtained from Molecular Signature Database
@@ -73,25 +63,6 @@ NULL
 #'
 #' @source \url{http://www.broadinstitute.org/gsea/msigdb/index.jsp}
 "MSigDB"
-
-#' Drug SIGnature DataBase
-#'
-#' 22,528 gene pathways obtained from Drug SIGnature DataBase (DSigDB v1.0).
-#'
-#' @usage data(DSigDb)
-#' @format An object of type list with 22,528 entries, each one representing a
-#' gene signature. The name of each list entry represents the signature's name.
-#' Additionally, \code{MSigDB} entries contain the following collection
-#' identifiers:
-#' \itemize{
-#'  \item{D1: FDA Approved (1202)}
-#'  \item{D2: Kinase Inhibitors (1220)}
-#'  \item{D3: Perturbagen Signatures (1998)}
-#'  \item{D4: Computational Drug Signatures (18107)}
-#' }
-#'
-#' @source \url{http://tanlab.ucdenver.edu/DSigDB/DSigDBv1.0/}
-"DSigDB"
 
 #' Rapin et al. signatures
 #'
