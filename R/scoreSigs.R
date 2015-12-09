@@ -3,41 +3,43 @@
 #' @param data data frame of matrix with gene expression values where rows
 #' represent genes and columns represent samples.
 #' @param parsed logical.
-#' @param pcs when set the function will compute the Euclidean norm for
-#' selected principal components instead of using the first \code{n}
-#' (overrides \code{varCutoff}). Vector of length 2.
+#' @param genes vector of length \code{nrow(data)} containing gene names in
+#' "HGNC" format. If \code{parsed = TRUE} the parameter is omitted.
+#' @param signatures list where every entry is a character vector of
+#' the gene names in HGNC format that correspond to a given gene-pathway.
+#' @param threshold low density cutoff. Used in \code{\link{peakDistance2d}}.
+#' @param n Number of grid points in each direction. Can be scalar or a
+#' length-2 integer vector. See \link{kde2d}.
 #'
-#' @return norms a vector with the Euclidean Norm of all the loadings.
+#' @return A data frame with 2 columns; 1) \code{score}, the \code{PSigA}
+#' score of a given signature and 2) \code{size}, the number of genes in that
+#' signature that were found in \code{data}. If \code{parsed = FALSE}, the
+#' function returns a list, where the first entry contains the data frame
+#' described above and the second entry the parsed \code{data}.
 #'
 #' @export
 scoreSigs <- function(data, parsed = FALSE, genes = (if (parsed) NULL),
-                      signatures,  varCutoff = 0.75, denCutoffLow = 0.005,
-                      denCutoffHigh = 0.02, pc = NULL, show.all = FALSE){
+                      signatures,  threshold = 0.003, n = 200)
+    {
 
     if (!parsed)
         data <- readSamples(data, genes)
 
-    scores <- do.call(rbind, mclapply(signatures, measureSpread, data,
-                                      varCutoff, denCutoffLow, denCutoffHigh,
-                                      pc, show.all, mc.preschedule = FALSE))
+    scores <- do.call(rbind, mclapply(signatures, peakDistance2d, data,
+                                      threshold, n, mc.preschedule = FALSE))
 
 
-    NAsigs <- scores[,1] == "NA"
-    if (sum(NAsigs) > 0) {
-        message(paste("Removed", sum(NAsigs), "signature(s)"))
-        scores <- scores[ which(!NAsigs), ]
-    }
+#     NAsigs <- scores[,1] == "NA"
+#     if (sum(NAsigs) > 0) {
+#         message(paste("Removed", sum(NAsigs), "signature(s)"))
+#         scores <- scores[ which(!NAsigs), ]
+#     }
 
-    if (show.all) {
-        scores <- as.data.frame(scores, stringsAsFactors = FALSE)
-        colnames(scores) <- c("Density", "Size", "PCs")
-        s <- sort(scores$Density, decreasing = TRUE, index.return = TRUE)
-        scores <- scores[s$ix, ]
-    }else {
-        s <- sort(scores, decreasing = TRUE, index.return = TRUE)
-        scores <- as.data.frame(scores[s$ix], stringsAsFactors = FALSE)
-        colnames(scores) <- c("Density")
-    }
+    scores <- as.data.frame(scores, stringsAsFactors = FALSE)
+    colnames(scores) <- c("score", "size")
+    s <- sort(scores$score, decreasing = TRUE, index.return = TRUE)
+    scores <- scores[s$ix, ]
+
 
     if (parsed)
         scores
