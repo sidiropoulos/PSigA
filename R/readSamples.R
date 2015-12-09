@@ -5,7 +5,7 @@
 #' @param genes vector of length \code{nrow(data)} containing gene names in
 #' "HGNC" format.
 #'
-#' @return kati gamato
+#' @return A data frame ...
 #'
 #' @export
 readSamples <- function(data, genes) {
