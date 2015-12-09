@@ -11,7 +11,6 @@ Description: More about what it does (maybe more than one line). Maybe 2 lines?
 Depends:
     R (>= 3.2.1), parallel, MASS
 Imports:
-    caTools(>= 1.17.1),
     ggbiplot(>= 0.55),
     ggplot2(>= 1.0.1)
 Suggests:
