@@ -14,7 +14,7 @@ represent genes and columns represent samples.}
 "HGNC" format.}
 }
 \value{
-kati gamato
+A data frame ...
 }
 \description{
 Import samples

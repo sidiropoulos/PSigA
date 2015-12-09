@@ -5,8 +5,7 @@
 \title{Score gene signatures based on PCA density}
 \usage{
 scoreSigs(data, parsed = FALSE, genes = (if (parsed) NULL), signatures,
-  varCutoff = 0.75, denCutoffLow = 0.005, denCutoffHigh = 0.02,
-  pc = NULL, show.all = FALSE)
+  threshold = 0.003, n = 200)
 }
 \arguments{
 \item{data}{data frame of matrix with gene expression values where rows
@@ -14,12 +13,23 @@ represent genes and columns represent samples.}
 
 \item{parsed}{logical.}
 
-\item{pcs}{when set the function will compute the Euclidean norm for
-selected principal components instead of using the first \code{n}
-(overrides \code{varCutoff}). Vector of length 2.}
+\item{genes}{vector of length \code{nrow(data)} containing gene names in
+"HGNC" format. If \code{parsed = TRUE} the parameter is omitted.}
+
+\item{signatures}{list where every entry is a character vector of
+the gene names in HGNC format that correspond to a given gene-pathway.}
+
+\item{threshold}{low density cutoff. Used in \code{\link{peakDistance2d}}.}
+
+\item{n}{Number of grid points in each direction. Can be scalar or a
+length-2 integer vector. See \link{kde2d}.}
 }
 \value{
-norms a vector with the Euclidean Norm of all the loadings.
+A data frame with 2 columns; 1) \code{score}, the \code{PSigA}
+score of a given signature and 2) \code{size}, the number of genes in that
+signature that were found in \code{data}. If \code{parsed = FALSE}, the
+function returns a list, where the first entry contains the data frame
+described above and the second entry the parsed \code{data}.
 }
 \description{
 Score gene signatures based on PCA density
