@@ -1,3 +1,25 @@
+#' @title Peak distance in a 2D signature PCA
+#'
+#' @description Locates and measures the Euclidean distance between the two
+#' highest peaks of the 2D density function, estimated from the samples'
+#' distribution in the first two principal components in a signature PCA
+#' (see \code{\link{signaturePCA}}).
+#'
+#' @param signature character vector with the signature's gene identifiers in
+#' HGNC format.
+#' @param data Gene expression matrix where rownames correspond to unique gene
+#' identifiers (HGNC format \link{http://www.genenames.org}) and columns
+#' correspond to samples.
+#' @param threshold density cutoff. Density values lower than the
+#' \code{threshold} will not be considered peaks. Usefull when outliers are
+#' present in the PCA.
+#' @param n Number of grid points in each direction. Can be scalar or a
+#' length-2 integer vector. See \link{kde2d}.
+#'
+#' @return A vector of length 2. The first value corresponds to the score and
+#' the second to the number of genes in the \code{signature} that were found in
+#' the \code{data}.
+#'
 #' @import MASS
 #' @export
 peakDistance2d <- function(signature, data, threshold, n = 200){

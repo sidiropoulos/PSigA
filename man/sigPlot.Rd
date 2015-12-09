@@ -25,7 +25,11 @@ based on \code{groups} parameter.}
 
 \item{...}{methods passed to \code{\link{ggplot}}}
 }
+\value{
+A ggplot2 plot
+}
 \description{
-To do..
+Plot of the selected signature's PCA using
+\code{\link{ggplot2}}.
 }
 

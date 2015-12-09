@@ -26,10 +26,11 @@ length-2 integer vector. See \link{kde2d}.}
 }
 \value{
 A data frame with 2 columns; 1) \code{score}, the \code{PSigA}
-score of a given signature and 2) \code{size}, the number of genes in that
-signature that were found in \code{data}. If \code{parsed = FALSE}, the
-function returns a list, where the first entry contains the data frame
-described above and the second entry the parsed \code{data}.
+score of a given signature and 2) \code{size}, the number of genes in the
+\code{signature} that were found in the \code{data}. If
+\code{parsed = FALSE}, the function returns a list, where the first entry
+contains the data frame described above and the second entry the parsed
+\code{data}.
 }
 \description{
 Score gene signatures based on PCA density

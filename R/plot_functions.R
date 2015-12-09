@@ -1,6 +1,7 @@
-#' @title Produces a bibplot of the selected signature's PCA
+#' @title Signature Biplot for principal compontents
 #'
-#' @description To do
+#' @description Produces a bibplot of the selected signature's PCA. Based on
+#' \code{\link{ggbiplot}} and \code{\link{ggplot2}}.
 #'
 #' @param sigPCA a \code{\link{prcomp}} object, preferrably produced using
 #' \code{\link{signaturePCA}}
@@ -16,9 +17,9 @@
 #' @param main plot title
 #' @param palette colorbrewer palette scheme to be used. Applicable only when
 #' \code{groups} are provided.
-#' @param ... methods passed to \code{\link{ggbiplot}}
+#' @param ... methods passed to \code{\link{ggbiplot}}.
 #'
-#' @return signature PCA biplot
+#' @return A ggplot2 plot
 #'
 #' @import ggbiplot
 #' @export
@@ -51,7 +52,8 @@ sigBiplot <- function(sigPCA, pcs = c(1,2), groups = NULL, labels = NULL,
 
 #' @title Signature PCA plot
 #'
-#' @description To do..
+#' @description Plot of the selected signature's PCA using
+#' \code{\link{ggplot2}}.
 #'
 #' @param sigPCA a \code{\link{prcomp}} object, preferrably produced using
 #' \code{\link{signaturePCA}}
@@ -63,6 +65,8 @@ sigBiplot <- function(sigPCA, pcs = c(1,2), groups = NULL, labels = NULL,
 #' @param main plot title
 #' @param palette colorbrewer palette scheme to be used.
 #' @param ... methods passed to \code{\link{ggplot}}
+#'
+#' @return A ggplot2 plot
 #'
 #' @import ggplot2
 #' @export

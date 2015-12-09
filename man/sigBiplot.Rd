@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_functions.R
 \name{sigBiplot}
 \alias{sigBiplot}
-\title{Produces a bibplot of the selected signature's PCA}
+\title{Signature Biplot for principal compontents}
 \usage{
 sigBiplot(sigPCA, pcs = c(1, 2), groups = NULL, labels = NULL,
   main = "Signature", obs.size = 2, var.size = 3, var.scaled = FALSE,
@@ -32,12 +32,13 @@ proportional to the Euclidean Norm of the variable's loading
 \item{palette}{colorbrewer palette scheme to be used. Applicable only when
 \code{groups} are provided.}
 
-\item{...}{methods passed to \code{\link{ggbiplot}}}
+\item{...}{methods passed to \code{\link{ggbiplot}}.}
 }
 \value{
-signature PCA biplot
+A ggplot2 plot
 }
 \description{
-To do
+Produces a bibplot of the selected signature's PCA. Based on
+\code{\link{ggbiplot}} and \code{\link{ggplot2}}.
 }
 
