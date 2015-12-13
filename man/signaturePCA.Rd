@@ -7,11 +7,10 @@
 signaturePCA(signature, data, center = TRUE, scale = FALSE, ...)
 }
 \arguments{
-\item{signature}{character vector with the signature's gene identifiers}
+\item{signature}{character vector with the signature's gene identifiers.}
 
 \item{data}{Gene expression matrix where rownames correspond to unique gene
-identifiers (HGNC format \link{http://www.genenames.org}) and columns
-correspond to samples.}
+identifiers in \code{signature} format and columns correspond to samples.}
 
 \item{center}{a logical value indicating whether the variables should be
 shifted to be zero centered. See \code{\link{prcomp}} for more details.}
@@ -26,5 +25,14 @@ scaled to have unit variance before the analysis takes place. See
 \code{signaturePCA} performs principal component analysis on
 the given data matrix and gene-signature and returns the results as an object
 of class \code{prcomp}.
+}
+\examples{
+data(AML)
+data(MSigDB)
+
+sigPCA <- signaturePCA(MSigDB[["NIKOLSKY_BREAST_CANCER_7P15_AMPLICON"]], AML)
+
+# plot using sigPlot
+sigPlot(sigPCA, groups = AML_meta$karyotype)
 }
 
