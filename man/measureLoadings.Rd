@@ -4,16 +4,16 @@
 \alias{measureLoadings}
 \title{Measure variable loadings}
 \usage{
-measureLoadings(pca, varCutoff = 0.75, pcs = NULL)
+measureLoadings(pca, varCutoff = 0.75, pc = NULL)
 }
 \arguments{
 \item{pca}{\code{\link{prcomp}} object.}
 
 \item{varCutoff}{cumulative variance cutoff.}
 
-\item{pcs}{when set the function will compute the Euclidean norm for
-selected principal components instead of using the first \code{n}
-(overrides \code{varCutoff}). Vector of length 2.}
+\item{pc}{when set the function will compute the Euclidean norm using the
+first \code{pc} principal components instead of using the first \code{n}
+(overrides \code{varCutoff}).}
 }
 \value{
 norms a vector with the Euclidean Norm of all the loadings.
@@ -22,5 +22,14 @@ norms a vector with the Euclidean Norm of all the loadings.
 Measures the Euclidean Norm of the PCA loadings (rotation
 matrix) of the first \code{n} principal components, where the cumulative
 variance on the \code{n}-th principal component is above a cutoff.
+}
+\examples{
+data(iris)
+
+pca <- prcomp(iris[, -5], scale = FALSE)
+measureLoadings(pca)
+
+#use only the first 2 principal components
+measureLoadings(pca, pc = 2)
 }
 
