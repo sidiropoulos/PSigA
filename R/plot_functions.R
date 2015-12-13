@@ -30,7 +30,7 @@
 #'
 #' sigBiplot(sigPCA, groups = AML_meta$karyotype)
 #' sigBiplot(sigPCA, groups = AML_meta$karyotype, labels = AML_meta$karyotype,
-#'           obs.size = 3)
+#'           obs.size = 3, main = "HOMOPHILIC_CELL_ADHESION")
 #'
 #' @import ggbiplot
 #' @export
@@ -84,7 +84,8 @@ sigBiplot <- function(sigPCA, groups = NULL, labels = NULL, pcs = c(1,2),
 #' sigPCA <- signaturePCA(MSigDB[["HOMOPHILIC_CELL_ADHESION"]], AML)
 #'
 #' sigPlot(sigPCA, groups = AML_meta$karyotype)
-#' sigPlot(sigPCA, groups = AML_meta$karyotype, text = TRUE)
+#' sigPlot(sigPCA, groups = AML_meta$karyotype, text = TRUE,
+#'         main = "HOMOPHILIC_CELL_ADHESION")
 #'
 #' @import ggplot2
 #' @export

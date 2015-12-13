@@ -36,6 +36,7 @@ Plot of the selected signature's PCA using
 sigPCA <- signaturePCA(MSigDB[["HOMOPHILIC_CELL_ADHESION"]], AML)
 
 sigPlot(sigPCA, groups = AML_meta$karyotype)
-sigPlot(sigPCA, groups = AML_meta$karyotype, text = TRUE)
+sigPlot(sigPCA, groups = AML_meta$karyotype, text = TRUE,
+        main = "HOMOPHILIC_CELL_ADHESION")
 }
 

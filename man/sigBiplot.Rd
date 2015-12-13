@@ -49,6 +49,6 @@ sigPCA <- signaturePCA(MSigDB[["HOMOPHILIC_CELL_ADHESION"]], AML)
 
 sigBiplot(sigPCA, groups = AML_meta$karyotype)
 sigBiplot(sigPCA, groups = AML_meta$karyotype, labels = AML_meta$karyotype,
-          obs.size = 3)
+          obs.size = 3, main = "HOMOPHILIC_CELL_ADHESION")
 }
 
