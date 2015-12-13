@@ -2,7 +2,7 @@
 % Please edit documentation in R/readSamples.R
 \name{readSamples}
 \alias{readSamples}
-\title{Import samples}
+\title{Read and samples to be used in \link{PSigA} functions}
 \usage{
 readSamples(data, genes)
 }
@@ -17,6 +17,6 @@ represent genes and columns represent samples.}
 A data frame ...
 }
 \description{
-Import samples
+The function ...
 }
 

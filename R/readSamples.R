@@ -1,4 +1,6 @@
-#' Import samples
+#' Read and samples to be used in \link{PSigA} functions
+#'
+#' @description The function ...
 #'
 #' @param data data frame of matrix with gene expression values where rows
 #' represent genes and columns represent samples.
@@ -7,6 +9,7 @@
 #'
 #' @return A data frame ...
 #'
+#' @import parallel
 #' @export
 readSamples <- function(data, genes) {
 
