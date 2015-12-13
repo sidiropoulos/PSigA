@@ -18,23 +18,28 @@
 #' contains the data frame described above and the second entry the parsed
 #' \code{data}.
 #'
+#' @examples
+#'
+#' data("AML")
+#' data("RAPIN")
+#'
+#' scores <- scoreSigs(AML, parsed = TRUE, signatures = RAPIN)
+#' head(scores)
+#'
+#' #plot top signature
+#' sigPCA <- signaturePCA(RAPIN[["rownames(scores)[1]"]], AML)
+#' sigBiplot(sigPCA, AML_meta$karyotype, main = rownames(scores)[1])
+#'
+#' @import parallel
 #' @export
 scoreSigs <- function(data, parsed = FALSE, genes = (if (parsed) NULL),
-                      signatures,  threshold = 0.003, n = 200)
-    {
+                      signatures,  threshold = 0.005, n = 200){
 
     if (!parsed)
         data <- readSamples(data, genes)
 
     scores <- do.call(rbind, mclapply(signatures, peakDistance2d, data,
                                       threshold, n, mc.preschedule = FALSE))
-
-
-#     NAsigs <- scores[,1] == "NA"
-#     if (sum(NAsigs) > 0) {
-#         message(paste("Removed", sum(NAsigs), "signature(s)"))
-#         scores <- scores[ which(!NAsigs), ]
-#     }
 
     scores <- as.data.frame(scores, stringsAsFactors = FALSE)
     colnames(scores) <- c("score", "size")

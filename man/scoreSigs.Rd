@@ -5,7 +5,7 @@
 \title{Score gene signatures based on PCA density}
 \usage{
 scoreSigs(data, parsed = FALSE, genes = (if (parsed) NULL), signatures,
-  threshold = 0.003, n = 200)
+  threshold = 0.005, n = 200)
 }
 \arguments{
 \item{data}{data frame of matrix with gene expression values where rows
@@ -34,5 +34,16 @@ contains the data frame described above and the second entry the parsed
 }
 \description{
 Score gene signatures based on PCA density
+}
+\examples{
+data("AML")
+data("RAPIN")
+
+scores <- scoreSigs(AML, parsed = TRUE, signatures = RAPIN)
+head(scores)
+
+#plot top signature
+sigPCA <- signaturePCA(RAPIN[["rownames(scores)[1]"]], AML)
+sigBiplot(sigPCA, AML_meta$karyotype, main = rownames(scores)[1])
 }
 
