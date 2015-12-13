@@ -4,23 +4,26 @@
 \name{AML_meta}
 \alias{AML_meta}
 \title{AML dataset metadata}
-\format{A data frame with 183 rows (patients) and 5 variables
+\format{A data frame with 424 rows (patients) and 3 columns:
 \itemize{
     \item karyotype: Cytogenetic aberration
     \item gender: 1 = male, 0 = female
     \item age: patient's age in years
-    \item OS: Survival from diagnosis until the last follow up in days
-    \item EventOS: Patient status by the time of the last follow up.
-          1 = dead, 0 = alive
 }}
 \source{
 \url{https://tcga-data.nci.nih.gov/tcga/}
+
+\url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15434}
+
+\url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE13159}
+
+\url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE14468}
 }
 \usage{
-data(AML_meta)
+data(AML)
 }
 \description{
-Clinical data of the TCGA AML patients.
+Clinical data for the \code{\link{AML}} dataset.
 }
 \keyword{datasets}
 

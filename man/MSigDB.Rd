@@ -22,7 +22,7 @@ identifiers:
 \url{http://www.broadinstitute.org/gsea/msigdb/index.jsp}
 }
 \usage{
-data(MSigDb)
+data(MSigDB)
 }
 \description{
 10,348 gene pathways obtained from Molecular Signature Database

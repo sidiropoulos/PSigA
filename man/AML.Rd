@@ -3,19 +3,28 @@
 \docType{data}
 \name{AML}
 \alias{AML}
-\title{Microarray data of 183 AML patients}
-\format{A data frame with 54675 rows (Affy HGU 133 Plus 2 probes) and 183
+\title{Microarray data of 424 AML patients}
+\format{A data frame with 21369 rows (genes in HGNC format) and 424
 columns (patients).}
 \source{
 \url{https://tcga-data.nci.nih.gov/tcga/}
+
+\url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15434}
+
+\url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE13159}
+
+\url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE14468}
 }
 \usage{
 data(AML)
 }
 \description{
-Gene expression data of 183 AML patients, retrieved from TCGA, normalized
-and batch corrected. Rows represent microarray probes of the Affymetrix HGU
-133 Plus2 platform. Each column represents an AML patient.
+Gene expression data of 424 AML patients with aberrant karyotyope (AK-AML),
+retrieved from TCGA, GSE15434, GSE13159 and GSE14468, normalized and batch
+corrected. Rows represent genes in HGNC format. Each column represents an
+AML patient.
+A data frame with clinical information on the karyotype, gender and age of
+the AK-AML patients is also loaded (\code{\link{AML_meta}}).
 }
 \keyword{datasets}
 
