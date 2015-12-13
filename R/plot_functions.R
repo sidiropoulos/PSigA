@@ -5,10 +5,10 @@
 #'
 #' @param sigPCA a \code{\link{prcomp}} object, preferrably produced using
 #' \code{\link{signaturePCA}}
-#' @param pcs which PCs to plot. default: 1,2
 #' @param groups optional factor variable indicating the groups that the
 #' observations belong to. If provided the points will be colored accordingly
 #' @param labels optional vector of labels for the observations
+#' @param pcs which PCs to plot. default: 1,2
 #' @param obs.size size of the points for the observations
 #' @param var.size size of the text for the variables
 #' @param var.scaled logical value. When set to TRUE the variable text size is
@@ -21,12 +21,23 @@
 #'
 #' @return A ggplot2 plot
 #'
+#' @examples
+#'
+#' data(AML)
+#' data(MSigDB)
+#'
+#' sigPCA <- signaturePCA(MSigDB[["HOMOPHILIC_CELL_ADHESION"]], AML)
+#'
+#' sigBiplot(sigPCA, groups = AML_meta$karyotype)
+#' sigBiplot(sigPCA, groups = AML_meta$karyotype, labels = AML_meta$karyotype,
+#'           obs.size = 3)
+#'
 #' @import ggbiplot
 #' @export
 
-sigBiplot <- function(sigPCA, pcs = c(1,2), groups = NULL, labels = NULL,
-                      main = "Signature", obs.size = 2, var.size = 3,
-                      var.scaled = FALSE, palette = "Paired", ...) {
+sigBiplot <- function(sigPCA, groups = NULL, labels = NULL, pcs = c(1,2),
+                      main = "", obs.size = 2, var.size = 3,
+                      var.scaled = FALSE, palette = "Paired", ...){
 
     if (var.scaled) {
         norms <- measureLoadings(sigPCA)
@@ -57,22 +68,29 @@ sigBiplot <- function(sigPCA, pcs = c(1,2), groups = NULL, labels = NULL,
 #'
 #' @param sigPCA a \code{\link{prcomp}} object, preferrably produced using
 #' \code{\link{signaturePCA}}
-#' @param pcs which PCs to plot. default: 1,2
 #' @param groups optional factor variable indicating the groups that the
 #' observations belong to.
 #' @param text when TRUE it plots textual annotations instead of points
 #'  based on \code{groups} parameter.
+#' @param pcs which PCs to plot. default: 1,2
 #' @param main plot title
 #' @param palette colorbrewer palette scheme to be used.
 #' @param ... methods passed to \code{\link{ggplot}}
 #'
 #' @return A ggplot2 plot
 #'
+#' @examples
+#'
+#' sigPCA <- signaturePCA(MSigDB[["HOMOPHILIC_CELL_ADHESION"]], AML)
+#'
+#' sigPlot(sigPCA, groups = AML_meta$karyotype)
+#' sigPlot(sigPCA, groups = AML_meta$karyotype, text = TRUE)
+#'
 #' @import ggplot2
 #' @export
 #'
-sigPlot <- function(sigPCA, pcs = c(1,2), groups = NULL, text = FALSE,
-                    main = "Signature", palette = "Paired", ...)  {
+sigPlot <- function(sigPCA, groups = NULL, text = FALSE, pcs = c(1,2),
+                    main = "", palette = "Paired", ...)  {
 
     # Groups flag
     gFlag <- TRUE
@@ -87,6 +105,9 @@ sigPlot <- function(sigPCA, pcs = c(1,2), groups = NULL, text = FALSE,
     colnames(data) <- c("groups", "x", "y")
     xlab <- paste("PC", pcs[1], sep = "")
     ylab <- paste("PC", pcs[2], sep = "")
+
+    #Prevent R CMD check "no global definition.." NOTE
+    x <- y <- NULL
 
     if (gFlag) {
         p <- ggplot(data, aes(x = x, y = y, label = groups,

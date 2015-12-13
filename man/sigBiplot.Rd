@@ -4,20 +4,20 @@
 \alias{sigBiplot}
 \title{Signature Biplot for principal compontents}
 \usage{
-sigBiplot(sigPCA, pcs = c(1, 2), groups = NULL, labels = NULL,
-  main = "Signature", obs.size = 2, var.size = 3, var.scaled = FALSE,
+sigBiplot(sigPCA, groups = NULL, labels = NULL, pcs = c(1, 2),
+  main = "", obs.size = 2, var.size = 3, var.scaled = FALSE,
   palette = "Paired", ...)
 }
 \arguments{
 \item{sigPCA}{a \code{\link{prcomp}} object, preferrably produced using
 \code{\link{signaturePCA}}}
 
-\item{pcs}{which PCs to plot. default: 1,2}
-
 \item{groups}{optional factor variable indicating the groups that the
 observations belong to. If provided the points will be colored accordingly}
 
 \item{labels}{optional vector of labels for the observations}
+
+\item{pcs}{which PCs to plot. default: 1,2}
 
 \item{main}{plot title}
 
@@ -40,5 +40,15 @@ A ggplot2 plot
 \description{
 Produces a bibplot of the selected signature's PCA. Based on
 \code{\link{ggbiplot}} and \code{\link{ggplot2}}.
+}
+\examples{
+data(AML)
+data(MSigDB)
+
+sigPCA <- signaturePCA(MSigDB[["HOMOPHILIC_CELL_ADHESION"]], AML)
+
+sigBiplot(sigPCA, groups = AML_meta$karyotype)
+sigBiplot(sigPCA, groups = AML_meta$karyotype, labels = AML_meta$karyotype,
+          obs.size = 3)
 }
 

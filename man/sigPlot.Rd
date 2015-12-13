@@ -4,20 +4,20 @@
 \alias{sigPlot}
 \title{Signature PCA plot}
 \usage{
-sigPlot(sigPCA, pcs = c(1, 2), groups = NULL, text = FALSE,
-  main = "Signature", palette = "Paired", ...)
+sigPlot(sigPCA, groups = NULL, text = FALSE, pcs = c(1, 2), main = "",
+  palette = "Paired", ...)
 }
 \arguments{
 \item{sigPCA}{a \code{\link{prcomp}} object, preferrably produced using
 \code{\link{signaturePCA}}}
-
-\item{pcs}{which PCs to plot. default: 1,2}
 
 \item{groups}{optional factor variable indicating the groups that the
 observations belong to.}
 
 \item{text}{when TRUE it plots textual annotations instead of points
 based on \code{groups} parameter.}
+
+\item{pcs}{which PCs to plot. default: 1,2}
 
 \item{main}{plot title}
 
@@ -31,5 +31,11 @@ A ggplot2 plot
 \description{
 Plot of the selected signature's PCA using
 \code{\link{ggplot2}}.
+}
+\examples{
+sigPCA <- signaturePCA(MSigDB[["HOMOPHILIC_CELL_ADHESION"]], AML)
+
+sigPlot(sigPCA, groups = AML_meta$karyotype)
+sigPlot(sigPCA, groups = AML_meta$karyotype, text = TRUE)
 }
 
