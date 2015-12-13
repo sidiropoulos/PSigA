@@ -23,7 +23,8 @@
 #' data("AML")
 #' data("RAPIN")
 #'
-#' scores <- scoreSigs(AML, parsed = TRUE, signatures = RAPIN)
+#' scores <- scoreSigs(AML, parsed = TRUE, signatures = RAPIN,
+#'                     threshold = 0.003)
 #' head(scores)
 #'
 #' #plot top signature
