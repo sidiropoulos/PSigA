@@ -28,7 +28,7 @@
 #' head(scores)
 #'
 #' #plot top signature
-#' sigPCA <- signaturePCA(RAPIN[["rownames(scores)[1]"]], AML)
+#' sigPCA <- signaturePCA(RAPIN[[rownames(scores)[1]]], AML)
 #' sigBiplot(sigPCA, AML_meta$karyotype, main = rownames(scores)[1])
 #'
 #' @import parallel
