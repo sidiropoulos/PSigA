@@ -2,20 +2,20 @@
 % Please edit documentation in R/peakDistance2d.R
 \name{peakDistance2d}
 \alias{peakDistance2d}
-\title{Peak distance in a 2D signature PCA}
+\title{Peak distance in a 2D signature-PCA}
 \usage{
-peakDistance2d(signature, data, threshold, n = 200)
+peakDistance2d(signature, data, threshold = 0.005, n = 200)
 }
 \arguments{
 \item{signature}{character vector with the signature's gene identifiers in
 HGNC format.}
 
 \item{data}{Gene expression matrix where rownames correspond to unique gene
-identifiers (HGNC format \link{http://www.genenames.org}) and columns
+identifiers (\href{http://www.genenames.org}{HGNC} format) and columns
 correspond to samples.}
 
 \item{threshold}{density cutoff. Density values lower than the
-\code{threshold} will not be considered peaks. Usefull when outliers are
+\code{threshold} will not be considered peaks. Useful when outliers are
 present in the PCA.}
 
 \item{n}{Number of grid points in each direction. Can be scalar or a
@@ -27,9 +27,15 @@ the second to the number of genes in the \code{signature} that were found in
 the \code{data}.
 }
 \description{
-Locates and measures the Euclidean distance between the two
+Measures the Euclidean distance between the two
 highest peaks of the 2D density function, estimated from the samples'
 distribution in the first two principal components in a signature PCA
 (see \code{\link{signaturePCA}}).
+}
+\examples{
+data(AML)
+data(MSigDB)
+
+peakDistance2d(MSigDB[["NIKOLSKY_BREAST_CANCER_7P15_AMPLICON"]], AML)
 }
 

@@ -1,6 +1,6 @@
-#' @title Peak distance in a 2D signature PCA
+#' @title Peak distance in a 2D signature-PCA
 #'
-#' @description Locates and measures the Euclidean distance between the two
+#' @description Measures the Euclidean distance between the two
 #' highest peaks of the 2D density function, estimated from the samples'
 #' distribution in the first two principal components in a signature PCA
 #' (see \code{\link{signaturePCA}}).
@@ -8,10 +8,10 @@
 #' @param signature character vector with the signature's gene identifiers in
 #' HGNC format.
 #' @param data Gene expression matrix where rownames correspond to unique gene
-#' identifiers (HGNC format \link{http://www.genenames.org}) and columns
+#' identifiers (\href{http://www.genenames.org}{HGNC} format) and columns
 #' correspond to samples.
 #' @param threshold density cutoff. Density values lower than the
-#' \code{threshold} will not be considered peaks. Usefull when outliers are
+#' \code{threshold} will not be considered peaks. Useful when outliers are
 #' present in the PCA.
 #' @param n Number of grid points in each direction. Can be scalar or a
 #' length-2 integer vector. See \link{kde2d}.
@@ -20,11 +20,17 @@
 #' the second to the number of genes in the \code{signature} that were found in
 #' the \code{data}.
 #'
+#' @examples
+#'
+#' data(AML)
+#' data(MSigDB)
+#'
+#' peakDistance2d(MSigDB[["NIKOLSKY_BREAST_CANCER_7P15_AMPLICON"]], AML)
+#'
 #' @import MASS
 #' @export
-peakDistance2d <- function(signature, data, threshold, n = 200){
+peakDistance2d <- function(signature, data, threshold = 0.005, n = 200){
 
-    #
     inSet <- signature %in% rownames(data)
 
     if (sum(inSet) < 3)
@@ -45,7 +51,6 @@ peakDistance2d <- function(signature, data, threshold, n = 200){
                            index.return = TRUE)$ix[1:2], ]
 
     dist <- norm(matrix(c(d$x[maxPeaks[,1]],d$y[maxPeaks[,2]]), nrow = 2))
-
     c(dist, sum(inSet))
 }
 
