@@ -40,7 +40,7 @@ scoreSigs <- function(data, parsed = FALSE, genes = (if (parsed) NULL),
         data <- readSamples(data, genes)
 
     scores <- do.call(rbind, mclapply(signatures, peakDistance2d, data,
-                                      threshold, n, mc.preschedule = FALSE))
+                                      threshold, n))
 
     scores <- as.data.frame(scores, stringsAsFactors = FALSE)
     colnames(scores) <- c("score", "size")
