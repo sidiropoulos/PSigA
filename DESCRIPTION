@@ -20,3 +20,6 @@ Suggests:
     breastCancerVDX
 License: GPL (>=2)
 LazyData: true
+biocViews: Pathways, PrincipalComponent, Software, Visualization,
+    QualityControl, Microarray
+
