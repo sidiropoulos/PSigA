@@ -9,6 +9,14 @@
 #'
 #' @return A data frame ...
 #'
+#' @examples
+#'
+#' require(Biobase)
+#' require(breastcancerVDX)
+#'
+#' VDX <- readSamples(data = exprs(vdx)[1:1000,],
+#'                    genes = fData(vdx)$Gene.symbol[1:1000])
+#'
 #' @import parallel
 #' @export
 readSamples <- function(data, genes) {

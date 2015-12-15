@@ -14,6 +14,8 @@
 #' \code{prcomp} for more details.
 #' @param ... arguments passed to \code{prcomp}.
 #'
+#' @return A list with class \code{prcomp}.
+#'
 #' @examples
 #'
 #' require(Biobase)
