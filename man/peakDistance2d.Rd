@@ -7,12 +7,10 @@
 peakDistance2d(signature, data, threshold = 0.005, n = 200)
 }
 \arguments{
-\item{signature}{character vector with the signature's gene identifiers in
-HGNC format.}
+\item{signature}{character vector with the signature's gene identifiers}
 
 \item{data}{Gene expression matrix where rownames correspond to unique gene
-identifiers (\href{http://www.genenames.org}{HGNC} format) and columns
-correspond to samples.}
+identifiers in \code{signature} fortmat and columns correspond to samples.}
 
 \item{threshold}{density cutoff. Density values lower than the
 \code{threshold} will not be considered peaks. Useful when outliers are
@@ -33,9 +31,15 @@ distribution in the first two principal components in a signature PCA
 (see \code{\link{signaturePCA}}).
 }
 \examples{
-data(AML)
+require(Biobase)
+require(breastCancerVDX)
+data(vdx)
 data(MSigDB)
 
-peakDistance2d(MSigDB[["NIKOLSKY_BREAST_CANCER_7P15_AMPLICON"]], AML)
+#get the first 5000 probes of the vdx array
+VDX <- readSamples(data = exprs(vdx)[1:5000,],
+                   genes = fData(vdx)$Gene.symbol[1:5000])
+
+peakDistance2d(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
 }
 

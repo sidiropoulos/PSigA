@@ -2,7 +2,7 @@ Package: PSigA
 Type: Package
 Title: A gene-signature ranking method based on sample density in PCA space
 Version: 0.99.0
-Date: 2015-12-13
+Date: 2015-12-15
 Authors@R: c(person("Nikos", "Sidiropoulos", role=c("cre", "aut"),
     email="nikos.sidiropoulos@bric.ku.dk"), person("Frederik Otzen", "Bagger",
     role="aut", email="frederik@ebi.ac.uk"), person("Nicolas", "Rapin",
@@ -12,11 +12,11 @@ Depends:
     R (>= 3.2.1), parallel, MASS
 Imports:
     ggbiplot(>= 0.55),
-    ggplot2(>= 1.0.1)
+    ggplot2(>= 1.0.1),
 Suggests:
     devtools,
-    BiocGenerics,
+    Biobase,
     BiocStyle,
-    hgu133plus2.db
+    breastCancerVDX
 License: GPL (>=2)
 LazyData: true

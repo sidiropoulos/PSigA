@@ -27,12 +27,18 @@ the given data matrix and gene-signature and returns the results as an object
 of class \code{prcomp}.
 }
 \examples{
-data(AML)
+require(Biobase)
+require(breastCancerVDX)
+data(vdx)
 data(MSigDB)
 
-sigPCA <- signaturePCA(MSigDB[["NIKOLSKY_BREAST_CANCER_7P15_AMPLICON"]], AML)
+#get the first 5000 probes of the vdx array
+VDX <- readSamples(data = exprs(vdx)[1:5000,],
+                   genes = fData(vdx)$Gene.symbol[1:5000])
 
-# plot using sigPlot
-sigPlot(sigPCA, groups = AML_meta$karyotype)
+sigPCA <- signaturePCA(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
+
+#plot using sigPlot
+sigPlot(sigPCA)
 }
 

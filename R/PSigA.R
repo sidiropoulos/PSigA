@@ -10,43 +10,6 @@
 #' @name PSigA
 NULL
 
-#' Microarray data of 424 AML patients
-#'
-#' Gene expression data of 424 AML patients with aberrant karyotyope (AK-AML),
-#' retrieved from TCGA, GSE15434, GSE13159 and GSE14468, normalized and batch
-#' corrected. Rows represent genes in HGNC format. Each column represents an
-#' AML patient.
-#' A data frame with clinical information on the karyotype, gender and age of
-#' the AK-AML patients is also loaded (\code{\link{AML_meta}}).
-#'
-#' @usage data(AML)
-#' @format
-#' A data frame with 21369 rows (genes in HGNC format) and 424
-#' columns (patients).
-#'
-#' @source \url{https://tcga-data.nci.nih.gov/tcga/}
-#' @source \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15434}
-#' @source \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE13159}
-#' @source \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE14468}
-"AML"
-
-#' AML dataset metadata
-#'
-#' Clinical data for the \code{\link{AML}} dataset.
-#'
-#' @usage data(AML)
-#' @format A data frame with 424 rows (patients) and 3 columns:
-#' \itemize{
-#'     \item karyotype: Cytogenetic aberration
-#'     \item gender: 1 = male, 0 = female
-#'     \item age: patient's age in years
-#' }
-#' @source \url{https://tcga-data.nci.nih.gov/tcga/}
-#' @source \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15434}
-#' @source \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE13159}
-#' @source \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE14468}
-"AML_meta"
-
 #' Molecular Signature DataBase
 #'
 #' 10,348 gene pathways obtained from Molecular Signature Database

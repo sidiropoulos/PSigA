@@ -36,15 +36,20 @@ contains the data frame described above and the second entry the parsed
 Score gene signatures based on PCA density
 }
 \examples{
-data("AML")
-data("RAPIN")
+require(Biobase)
+require(breastCancerVDX)
+data(vdx)
+data(RAPIN)
 
-scores <- scoreSigs(AML, parsed = TRUE, signatures = RAPIN,
+VDX <- readSamples(data = exprs(vdx), genes = fData(vdx)$Gene.symbol)
+
+scores <- scoreSigs(VDX, parsed = TRUE, signatures = MSigDB[1827:1838],
                     threshold = 0.003)
 head(scores)
 
 #plot top signature
-sigPCA <- signaturePCA(RAPIN[[rownames(scores)[1]]], AML)
-sigBiplot(sigPCA, AML_meta$karyotype, main = rownames(scores)[1])
+sigPCA <- signaturePCA(MSigDB[[rownames(scores)[1]]], VDX)
+sigPlot(sigPCA)
+sigBiplot(sigPCA, factor(pData(vdx)$grade), main = rownames(scores)[1])
 }
 

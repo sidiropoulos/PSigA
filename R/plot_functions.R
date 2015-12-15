@@ -23,14 +23,20 @@
 #'
 #' @examples
 #'
-#' data(AML)
+#' require(Biobase)
+#' require(breastCancerVDX)
+#' data(vdx)
 #' data(MSigDB)
 #'
-#' sigPCA <- signaturePCA(MSigDB[["HOMOPHILIC_CELL_ADHESION"]], AML)
+#' #get the first 5000 probes of the vdx array
+#' VDX <- readSamples(data = exprs(vdx)[1:5000,],
+#'                    genes = fData(vdx)$Gene.symbol[1:5000])
 #'
-#' sigBiplot(sigPCA, groups = AML_meta$karyotype)
-#' sigBiplot(sigPCA, groups = AML_meta$karyotype, labels = AML_meta$karyotype,
-#'           obs.size = 3, main = "HOMOPHILIC_CELL_ADHESION")
+#' sigPCA <- signaturePCA(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
+#'
+#' sigBiplot(sigPCA)
+#' sigBiplot(sigPCA, groups = factor(pData(vdx)$grade),
+#'           main = "DOANE_BREAST_CANCER_ESR1_UP")
 #'
 #' @import ggbiplot
 #' @export
@@ -81,11 +87,20 @@ sigBiplot <- function(sigPCA, groups = NULL, labels = NULL, pcs = c(1,2),
 #'
 #' @examples
 #'
-#' sigPCA <- signaturePCA(MSigDB[["HOMOPHILIC_CELL_ADHESION"]], AML)
+#' require(Biobase)
+#' require(breastCancerVDX)
+#' data(vdx)
+#' data(MSigDB)
 #'
-#' sigPlot(sigPCA, groups = AML_meta$karyotype)
-#' sigPlot(sigPCA, groups = AML_meta$karyotype, text = TRUE,
-#'         main = "HOMOPHILIC_CELL_ADHESION")
+#' #get the first 5000 probes of the vdx array
+#' VDX <- readSamples(data = exprs(vdx)[1:5000,],
+#'                    genes = fData(vdx)$Gene.symbol[1:5000])
+#'
+#' sigPCA <- signaturePCA(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
+#'
+#' sigPlot(sigPCA)
+#' sigPlot(sigPCA, groups = factor(pData(vdx)$grade),
+#'           main = "DOANE_BREAST_CANCER_ESR1_UP")
 #'
 #' @import ggplot2
 #' @export

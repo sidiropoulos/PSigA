@@ -33,10 +33,19 @@ Plot of the selected signature's PCA using
 \code{\link{ggplot2}}.
 }
 \examples{
-sigPCA <- signaturePCA(MSigDB[["HOMOPHILIC_CELL_ADHESION"]], AML)
+require(Biobase)
+require(breastCancerVDX)
+data(vdx)
+data(MSigDB)
 
-sigPlot(sigPCA, groups = AML_meta$karyotype)
-sigPlot(sigPCA, groups = AML_meta$karyotype, text = TRUE,
-        main = "HOMOPHILIC_CELL_ADHESION")
+#get the first 5000 probes of the vdx array
+VDX <- readSamples(data = exprs(vdx)[1:5000,],
+                   genes = fData(vdx)$Gene.symbol[1:5000])
+
+sigPCA <- signaturePCA(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
+
+sigPlot(sigPCA)
+sigPlot(sigPCA, groups = factor(pData(vdx)$grade),
+          main = "DOANE_BREAST_CANCER_ESR1_UP")
 }
 

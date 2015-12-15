@@ -42,13 +42,19 @@ Produces a bibplot of the selected signature's PCA. Based on
 \code{\link{ggbiplot}} and \code{\link{ggplot2}}.
 }
 \examples{
-data(AML)
+require(Biobase)
+require(breastCancerVDX)
+data(vdx)
 data(MSigDB)
 
-sigPCA <- signaturePCA(MSigDB[["HOMOPHILIC_CELL_ADHESION"]], AML)
+#get the first 5000 probes of the vdx array
+VDX <- readSamples(data = exprs(vdx)[1:5000,],
+                   genes = fData(vdx)$Gene.symbol[1:5000])
 
-sigBiplot(sigPCA, groups = AML_meta$karyotype)
-sigBiplot(sigPCA, groups = AML_meta$karyotype, labels = AML_meta$karyotype,
-          obs.size = 3, main = "HOMOPHILIC_CELL_ADHESION")
+sigPCA <- signaturePCA(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
+
+sigBiplot(sigPCA)
+sigBiplot(sigPCA, groups = factor(pData(vdx)$grade),
+          main = "DOANE_BREAST_CANCER_ESR1_UP")
 }
 
