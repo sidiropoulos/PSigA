@@ -14,10 +14,14 @@ Imports:
     ggbiplot(>= 0.55),
     ggplot2(>= 1.0.1),
 Suggests:
-    devtools,
+    GSEABase,
     Biobase,
     BiocStyle,
-    breastCancerVDX
+    devtools,
+    breastCancerVDX,
+    ALL,
+    AnnotationDbi,
+    hgu95av2.db
 License: GPL (>=2)
 LazyData: true
 biocViews: Pathways, PrincipalComponent, Software, Visualization,
