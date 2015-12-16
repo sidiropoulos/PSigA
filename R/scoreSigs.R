@@ -38,23 +38,45 @@
 #'
 #' @import parallel
 #' @export
-scoreSigs <- function(data, parsed = FALSE, genes = (if (parsed) NULL),
-                      signatures,  threshold = 0.005, n = 200){
+scoreSigs <- function(data, geneIds, signatures, threshold = 0.005, n = 200){
 
-    if (!parsed)
-        data <- readSamples(data, genes)
+
+    #find and remove NA values
+    nonNAgenes <- which(!is.na(geneIds))
+    data <- data[nonNAgenes,]
+    genes <- geneIds[nonNAgenes]
+
+    if (sum(duplicated(genes)) > 0){
+        message(strwrap("Duplicate genes found. The row with the highest median
+                        expresison will be selected."))
+        data <- do.call(rbind, mclapply(unique(genes), .maxMedian, data,
+                                        genes))
+        rownames(data) <- unique(genes)
+    }
 
     scores <- do.call(rbind, mclapply(signatures, peakDistance2d, data,
                                       threshold, n))
 
     scores <- as.data.frame(scores, stringsAsFactors = FALSE)
-    colnames(scores) <- c("score", "size")
+    colnames(scores) <- c("Score", "Genes.found")
     s <- sort(scores$score, decreasing = TRUE, index.return = TRUE)
     scores <- scores[s$ix, ]
 
 
-    if (parsed)
+    if (length(unique(genes)) == length(geneIds))
         scores
     else
         list(data = data, scores = scores)
+}
+
+.maxMedian <- function(targetGene, data, genes) {
+
+    match <- genes == targetGene
+    if (sum(match) == 1){
+        data[match,]
+    }else {
+        maxGene <- which.max(abs(apply(data[match,], 1, median)))
+        data[maxGene, ]
+    }
+
 }

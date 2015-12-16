@@ -2,7 +2,6 @@
 
 export(measureLoadings)
 export(peakDistance2d)
-export(readSamples)
 export(scoreSigs)
 export(sigBiplot)
 export(sigPlot)

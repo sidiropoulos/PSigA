@@ -4,17 +4,11 @@
 \alias{scoreSigs}
 \title{Score gene signatures based on PCA density}
 \usage{
-scoreSigs(data, parsed = FALSE, genes = (if (parsed) NULL), signatures,
-  threshold = 0.005, n = 200)
+scoreSigs(data, signatures, threshold = 0.005, n = 200)
 }
 \arguments{
 \item{data}{data frame of matrix with gene expression values where rows
 represent genes and columns represent samples.}
-
-\item{parsed}{logical.}
-
-\item{genes}{vector of length \code{nrow(data)} containing gene names in
-"HGNC" format. If \code{parsed = TRUE} the parameter is omitted.}
 
 \item{signatures}{list where every entry is a character vector of
 the gene names in HGNC format that correspond to a given gene-pathway.}
@@ -23,6 +17,11 @@ the gene names in HGNC format that correspond to a given gene-pathway.}
 
 \item{n}{Number of grid points in each direction. Can be scalar or a
 length-2 integer vector. See \link{kde2d}.}
+
+\item{parsed}{logical.}
+
+\item{genes}{vector of length \code{nrow(data)} containing gene names in
+"HGNC" format. If \code{parsed = TRUE} the parameter is omitted.}
 }
 \value{
 A data frame with 2 columns; 1) \code{score}, the \code{PSigA}
