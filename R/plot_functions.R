@@ -3,8 +3,10 @@
 #' @description Produces a bibplot of the selected signature's PCA. Based on
 #' \code{\link{ggbiplot}} and \code{\link{ggplot2}}.
 #'
-#' @param sigPCA a \code{\link{prcomp}} object, preferrably produced using
-#' \code{\link{signaturePCA}}
+#' @param data gene expression matrix where rownames correspond to unique gene
+#' identifiers in \code{signature} format, and columns correspond to samples.
+#' @param signature character vector containing the signature's gene
+#' identifiers.
 #' @param groups optional factor variable indicating the groups that the
 #' observations belong to. If provided the points will be colored accordingly
 #' @param labels optional vector of labels for the observations
@@ -26,42 +28,41 @@
 #' require(Biobase)
 #' require(breastCancerVDX)
 #' data(vdx)
-#' data(MSigDB)
 #'
-#' #get the first 5000 probes of the vdx array
-#' VDX <- readSamples(data = exprs(vdx)[1:5000,],
-#'                    genes = fData(vdx)$Gene.symbol[1:5000])
+#' VDX <- parseData(data = exprs(vdx)[5000:9000,],
+#'                  geneIds = fData(vdx)$Gene.symbol[5000:9000])
 #'
-#' sigPCA <- signaturePCA(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
+#' dummySig <- c("AGR2", "SCGB1D2", "SCGB2A2")
 #'
-#' sigBiplot(sigPCA)
-#' sigBiplot(sigPCA, groups = factor(pData(vdx)$grade),
-#'           main = "DOANE_BREAST_CANCER_ESR1_UP")
+#' sigBiplot(VDX, dummySig)
+#' sigBiplot(VDX, dummySig, groups = factor(pData(vdx)$grade),
+#'           main = "dummySig")
 #'
 #' @import ggbiplot
 #' @export
-
-sigBiplot <- function(sigPCA, groups = NULL, labels = NULL, pcs = c(1,2),
+sigBiplot <- function(data, signature, groups = NULL, labels = NULL, pcs = c(1,2),
                       main = "", obs.size = 2, var.size = 3,
                       var.scaled = FALSE, palette = "Paired", ...){
 
+    pca <- .signaturePCA(data, signature)
+
     if (var.scaled) {
-        norms <- measureLoadings(sigPCA)
+        norms <- measureLoadings(pca)
         var.size <- norms*var.size
     }
 
     if (!is.null(labels)){
-        p <- ggbiplot(sigPCA, choices = pcs, groups = groups, labels = labels,
+        p <- ggbiplot(pca, choices = pcs, groups = groups, labels = labels,
                       labels.size = obs.size, varname.size = var.size, ... )
         p <- p + theme(legend.position="none")
         p <- p + scale_color_brewer(palette = palette)
     }else if (!is.null(groups)){
-        p <- ggbiplot(sigPCA, choices = pcs, groups = groups,
+        p <- ggbiplot(pca, choices = pcs, groups = groups,
                       varname.size = var.size, ... )
         p <- p + geom_point(aes(colour=groups), size = obs.size)
         p <- p + scale_color_brewer(palette = palette)
     }else {
-        p <- ggbiplot(sigPCA, choices = pcs, varname.size = var.size, ...)
+        p <- ggbiplot(pca, choices = pcs, varname.size = var.size, ...)
         p <- p + geom_point(size = obs.size)
     }
     p + ggtitle(main)
@@ -72,8 +73,10 @@ sigBiplot <- function(sigPCA, groups = NULL, labels = NULL, pcs = c(1,2),
 #' @description Plot of the selected signature's PCA using
 #' \code{\link{ggplot2}}.
 #'
-#' @param sigPCA a \code{\link{prcomp}} object, preferrably produced using
-#' \code{\link{signaturePCA}}
+#' @param data gene expression matrix where rownames correspond to unique gene
+#' identifiers in \code{signature} format, and columns correspond to samples.
+#' @param signature character vector containing the signature's gene
+#' identifiers.
 #' @param groups optional factor variable indicating the groups that the
 #' observations belong to.
 #' @param text when TRUE it plots textual annotations instead of points
@@ -90,33 +93,32 @@ sigBiplot <- function(sigPCA, groups = NULL, labels = NULL, pcs = c(1,2),
 #' require(Biobase)
 #' require(breastCancerVDX)
 #' data(vdx)
-#' data(MSigDB)
 #'
-#' #get the first 5000 probes of the vdx array
-#' VDX <- readSamples(data = exprs(vdx)[1:5000,],
-#'                    genes = fData(vdx)$Gene.symbol[1:5000])
+#' VDX <- parseData(data = exprs(vdx)[5000:9000,],
+#'                  geneIds = fData(vdx)$Gene.symbol[5000:9000])
 #'
-#' sigPCA <- signaturePCA(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
+#' dummySig <- c("AGR2", "SCGB1D2", "SCGB2A2")
 #'
-#' sigPlot(sigPCA)
-#' sigPlot(sigPCA, groups = factor(pData(vdx)$grade),
-#'           main = "DOANE_BREAST_CANCER_ESR1_UP")
+#' sigPlot(VDX, dummySig)
+#' sigPlot(VDX, dummySig, groups = factor(pData(vdx)$grade), main = "dummySig")
 #'
 #' @import ggplot2
 #' @export
 #'
-sigPlot <- function(sigPCA, groups = NULL, text = FALSE, pcs = c(1,2),
+sigPlot <- function(data, signature, groups = NULL, text = FALSE, pcs = c(1,2),
                     main = "", palette = "Paired", ...)  {
+
+    pca <- .signaturePCA(data, signature)
 
     # Groups flag
     gFlag <- TRUE
 
     if (is.null(groups)){
-        groups <- rep("sample", nrow(sigPCA$x))
+        groups <- rep("sample", nrow(pca$x))
         gFlag <- FALSE
     }
 
-    data <- data.frame(groups, sigPCA$x[, pcs])
+    data <- data.frame(groups, pca$x[, pcs])
 
     colnames(data) <- c("groups", "x", "y")
     xlab <- paste("PC", pcs[1], sep = "")
@@ -142,4 +144,18 @@ sigPlot <- function(sigPCA, groups = NULL, text = FALSE, pcs = c(1,2),
         p <- p + geom_point()
     }
     p
+}
+
+.signaturePCA <- function(data, signature){
+
+    inSet <- signature %in% rownames(data)
+    if (sum(inSet) < 3){
+        stop(strwrap("Less than 3 genes in the signature match the rows in the
+                      data. Make sure your data and signature are in the same
+                      gene format. Consider using parseData()", prefix = " ",
+             width = getOption("width")))
+    }
+
+    genes <- signature[signature %in% rownames(data)]
+    prcomp(t(data[genes,]), center = TRUE, scale = FALSE)
 }

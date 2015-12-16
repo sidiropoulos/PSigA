@@ -4,13 +4,16 @@
 \alias{sigBiplot}
 \title{Signature Biplot for principal compontents}
 \usage{
-sigBiplot(sigPCA, groups = NULL, labels = NULL, pcs = c(1, 2),
+sigBiplot(data, signature, groups = NULL, labels = NULL, pcs = c(1, 2),
   main = "", obs.size = 2, var.size = 3, var.scaled = FALSE,
   palette = "Paired", ...)
 }
 \arguments{
-\item{sigPCA}{a \code{\link{prcomp}} object, preferrably produced using
-\code{\link{signaturePCA}}}
+\item{data}{gene expression matrix where rownames correspond to unique gene
+identifiers in \code{signature} format, and columns correspond to samples.}
+
+\item{signature}{character vector containing the signature's gene
+identifiers.}
 
 \item{groups}{optional factor variable indicating the groups that the
 observations belong to. If provided the points will be colored accordingly}
@@ -45,16 +48,14 @@ Produces a bibplot of the selected signature's PCA. Based on
 require(Biobase)
 require(breastCancerVDX)
 data(vdx)
-data(MSigDB)
 
-#get the first 5000 probes of the vdx array
-VDX <- readSamples(data = exprs(vdx)[1:5000,],
-                   genes = fData(vdx)$Gene.symbol[1:5000])
+VDX <- parseData(data = exprs(vdx)[5000:9000,],
+                 geneIds = fData(vdx)$Gene.symbol[5000:9000])
 
-sigPCA <- signaturePCA(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
+dummySig <- c("AGR2", "SCGB1D2", "SCGB2A2")
 
-sigBiplot(sigPCA)
-sigBiplot(sigPCA, groups = factor(pData(vdx)$grade),
-          main = "DOANE_BREAST_CANCER_ESR1_UP")
+sigBiplot(VDX, dummySig)
+sigBiplot(VDX, dummySig, groups = factor(pData(vdx)$grade),
+          main = "dummySig")
 }
 

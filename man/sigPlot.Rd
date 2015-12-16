@@ -4,12 +4,15 @@
 \alias{sigPlot}
 \title{Signature PCA plot}
 \usage{
-sigPlot(sigPCA, groups = NULL, text = FALSE, pcs = c(1, 2), main = "",
-  palette = "Paired", ...)
+sigPlot(data, signature, groups = NULL, text = FALSE, pcs = c(1, 2),
+  main = "", palette = "Paired", ...)
 }
 \arguments{
-\item{sigPCA}{a \code{\link{prcomp}} object, preferrably produced using
-\code{\link{signaturePCA}}}
+\item{data}{gene expression matrix where rownames correspond to unique gene
+identifiers in \code{signature} format, and columns correspond to samples.}
+
+\item{signature}{character vector containing the signature's gene
+identifiers.}
 
 \item{groups}{optional factor variable indicating the groups that the
 observations belong to.}
@@ -36,16 +39,13 @@ Plot of the selected signature's PCA using
 require(Biobase)
 require(breastCancerVDX)
 data(vdx)
-data(MSigDB)
 
-#get the first 5000 probes of the vdx array
-VDX <- readSamples(data = exprs(vdx)[1:5000,],
-                   genes = fData(vdx)$Gene.symbol[1:5000])
+VDX <- parseData(data = exprs(vdx)[5000:9000,],
+                 geneIds = fData(vdx)$Gene.symbol[5000:9000])
 
-sigPCA <- signaturePCA(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
+dummySig <- c("AGR2", "SCGB1D2", "SCGB2A2")
 
-sigPlot(sigPCA)
-sigPlot(sigPCA, groups = factor(pData(vdx)$grade),
-          main = "DOANE_BREAST_CANCER_ESR1_UP")
+sigPlot(VDX, dummySig)
+sigPlot(VDX, dummySig, groups = factor(pData(vdx)$grade), main = "dummySig")
 }
 
