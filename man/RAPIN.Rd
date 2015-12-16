@@ -4,7 +4,7 @@
 \name{RAPIN}
 \alias{RAPIN}
 \title{Rapin et al. signatures}
-\format{An object of type list with 24 entries, each one representing a
+\format{An object of type list with 21 entries, each one representing a
 gene signature. The name of each list entry represents the signature's name.}
 \source{
 \url{http://www.bloodjournal.org/content/123/6/894}
@@ -13,7 +13,7 @@ gene signature. The name of each list entry represents the signature's name.}
 data(RAPIN)
 }
 \description{
-24 gene pathways obtained from Rapin et al. (2014).
+21 gene pathways obtained from Rapin et al. (2014).
 }
 \keyword{datasets}
 
