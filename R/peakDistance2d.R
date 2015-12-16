@@ -1,9 +1,9 @@
 #' @title Peak distance in a 2D signature-PCA
 #'
 #' @description Measures the Euclidean distance between the two
-#' highest peaks of the 2D density function, estimated from the samples'
-#' distribution in the first two principal components in a signature PCA
-#' (see \code{\link{signaturePCA}}).
+#' highest peaks of the 2D density function. The density is estimated from the
+#' samples' distribution in the first two principal components of a PCA, using
+#' the genes of a given signature.
 #'
 #' @param signature character vector with the signature's gene identifiers
 #' @param data Gene expression matrix where rownames correspond to unique gene
@@ -23,13 +23,15 @@
 #' require(Biobase)
 #' require(breastCancerVDX)
 #' data(vdx)
-#' data(MSigDB)
+#' data(RAPIN)
 #'
 #' #get the first 5000 probes of the vdx array
-#' VDX <- readSamples(data = exprs(vdx)[1:5000,],
-#'                    genes = fData(vdx)$Gene.symbol[1:5000])
+#' VDX <- parseData(data = exprs(vdx)[1:5000,],
+#'                    geneIds = fData(vdx)$Gene.symbol[1:5000])
 #'
-#' peakDistance2d(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
+#' dummySig <- rownames(VDX)[1:50]
+#'
+#' peakDistance2d(dummySig, VDX)
 #'
 #' @import MASS
 #' @export
@@ -37,8 +39,9 @@ peakDistance2d <- function(signature, data, threshold = 0.005, n = 200){
 
     inSet <- signature %in% rownames(data)
 
+    #if less than 3 genes are found return -1
     if (sum(inSet) < 3)
-        return(c(-1,0))
+        return(c(-1, sum(inSet), length(signature)))
 
     sigpca <- prcomp(t(data[signature[inSet], ]), center = TRUE,
                      scale = FALSE)
@@ -46,16 +49,15 @@ peakDistance2d <- function(signature, data, threshold = 0.005, n = 200){
     d <- kde2d(sigpca$x[,1], sigpca$x[,2], n = n)
     peaks <- .find2Dpeaks(d, threshold)
 
-    if (length(peaks) <= 1)
-        return(0)
-    if (nrow(peaks) < 2)
-        return(0)
+    #if less than 2 peaks are found, return 0
+    if (length(peaks) <= 1 | nrow(peaks) < 2)
+        return(c(0, sum(inSet), length(signature)))
 
     maxPeaks <- peaks[sort(d$z[peaks], decreasing = TRUE,
                            index.return = TRUE)$ix[1:2], ]
 
     dist <- norm(matrix(c(d$x[maxPeaks[,1]],d$y[maxPeaks[,2]]), nrow = 2))
-    c(dist, sum(inSet))
+    c(dist, sum(inSet), length(signature))
 }
 
 .find2Dpeaks <- function(d, threshold = 0.015){

@@ -26,20 +26,22 @@ the \code{data}.
 }
 \description{
 Measures the Euclidean distance between the two
-highest peaks of the 2D density function, estimated from the samples'
-distribution in the first two principal components in a signature PCA
-(see \code{\link{signaturePCA}}).
+highest peaks of the 2D density function. The density is estimated from the
+samples' distribution in the first two principal components of a PCA, using
+the genes of a given signature.
 }
 \examples{
 require(Biobase)
 require(breastCancerVDX)
 data(vdx)
-data(MSigDB)
+data(RAPIN)
 
 #get the first 5000 probes of the vdx array
-VDX <- readSamples(data = exprs(vdx)[1:5000,],
-                   genes = fData(vdx)$Gene.symbol[1:5000])
+VDX <- parseData(data = exprs(vdx)[1:5000,],
+                   geneIds = fData(vdx)$Gene.symbol[1:5000])
 
-peakDistance2d(MSigDB[["DOANE_BREAST_CANCER_ESR1_UP"]], VDX)
+dummySig <- rownames(VDX)[1:50]
+
+peakDistance2d(dummySig, VDX)
 }
 

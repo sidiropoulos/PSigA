@@ -2,11 +2,10 @@
 #'
 #' @param data data frame of matrix with gene expression values where rows
 #' represent genes and columns represent samples.
-#' @param parsed logical.
-#' @param genes vector of length \code{nrow(data)} containing gene names in
-#' "HGNC" format. If \code{parsed = TRUE} the parameter is omitted.
 #' @param signatures list where every entry is a character vector of
-#' the gene names in HGNC format that correspond to a given gene-pathway.
+#' the gene names that correspond to a gene-pathway. If the gene format is
+#' different from the one in \code{rownames(data)}, use \code{\link{parseData}}
+#' first.
 #' @param threshold low density cutoff. Used in \code{\link{peakDistance2d}}.
 #' @param n Number of grid points in each direction. Can be scalar or a
 #' length-2 integer vector. See \link{kde2d}.
@@ -25,58 +24,27 @@
 #' data(vdx)
 #' data(RAPIN)
 #'
-#' VDX <- readSamples(data = exprs(vdx), genes = fData(vdx)$Gene.symbol)
+#' VDX <- parseData(data = exprs(vdx)[1:5000,],
+#'                  geneIds = fData(vdx)$Gene.symbol[1:5000])
 #'
-#' scores <- scoreSigs(VDX, parsed = TRUE, signatures = MSigDB[1827:1838],
-#'                     threshold = 0.003)
+#' scores <- scoreSigs(VDX, RAPIN, threshold = 0.003)
 #' head(scores)
 #'
 #' #plot top signature
-#' sigPCA <- signaturePCA(MSigDB[[rownames(scores)[1]]], VDX)
-#' sigPlot(sigPCA)
-#' sigBiplot(sigPCA, factor(pData(vdx)$grade), main = rownames(scores)[1])
+#' sigPlot(VDX, RAPIN[[rownames(scores)[1]]])
+#' sigBiplot(VDX, RAPIN[[rownames(scores)[1]]], factor(pData(vdx)$grade),
+#'           main = rownames(scores)[1])
 #'
 #' @import parallel
 #' @export
-scoreSigs <- function(data, geneIds, signatures, threshold = 0.005, n = 200){
-
-
-    #find and remove NA values
-    nonNAgenes <- which(!is.na(geneIds))
-    data <- data[nonNAgenes,]
-    genes <- geneIds[nonNAgenes]
-
-    if (sum(duplicated(genes)) > 0){
-        message(strwrap("Duplicate genes found. The row with the highest median
-                        expresison will be selected."))
-        data <- do.call(rbind, mclapply(unique(genes), .maxMedian, data,
-                                        genes))
-        rownames(data) <- unique(genes)
-    }
+scoreSigs <- function(data, signatures, threshold = 0.005, n = 200){
 
     scores <- do.call(rbind, mclapply(signatures, peakDistance2d, data,
                                       threshold, n))
 
     scores <- as.data.frame(scores, stringsAsFactors = FALSE)
-    colnames(scores) <- c("Score", "Genes.found")
-    s <- sort(scores$score, decreasing = TRUE, index.return = TRUE)
-    scores <- scores[s$ix, ]
+    colnames(scores) <- c("Score", "Genes.found", "Genes.total")
+    s <- sort(scores$Score, decreasing = TRUE, index.return = TRUE)
 
-
-    if (length(unique(genes)) == length(geneIds))
-        scores
-    else
-        list(data = data, scores = scores)
-}
-
-.maxMedian <- function(targetGene, data, genes) {
-
-    match <- genes == targetGene
-    if (sum(match) == 1){
-        data[match,]
-    }else {
-        maxGene <- which.max(abs(apply(data[match,], 1, median)))
-        data[maxGene, ]
-    }
-
+    scores[s$ix, ]
 }

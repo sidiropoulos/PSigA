@@ -11,17 +11,14 @@ scoreSigs(data, signatures, threshold = 0.005, n = 200)
 represent genes and columns represent samples.}
 
 \item{signatures}{list where every entry is a character vector of
-the gene names in HGNC format that correspond to a given gene-pathway.}
+the gene names that correspond to a gene-pathway. If the gene format is
+different from the one in \code{rownames(data)}, use \code{\link{parseData}}
+first.}
 
 \item{threshold}{low density cutoff. Used in \code{\link{peakDistance2d}}.}
 
 \item{n}{Number of grid points in each direction. Can be scalar or a
 length-2 integer vector. See \link{kde2d}.}
-
-\item{parsed}{logical.}
-
-\item{genes}{vector of length \code{nrow(data)} containing gene names in
-"HGNC" format. If \code{parsed = TRUE} the parameter is omitted.}
 }
 \value{
 A data frame with 2 columns; 1) \code{score}, the \code{PSigA}
@@ -40,15 +37,15 @@ require(breastCancerVDX)
 data(vdx)
 data(RAPIN)
 
-VDX <- readSamples(data = exprs(vdx), genes = fData(vdx)$Gene.symbol)
+VDX <- parseData(data = exprs(vdx)[1:5000,],
+                 geneIds = fData(vdx)$Gene.symbol[1:5000])
 
-scores <- scoreSigs(VDX, parsed = TRUE, signatures = MSigDB[1827:1838],
-                    threshold = 0.003)
+scores <- scoreSigs(VDX, RAPIN, threshold = 0.003)
 head(scores)
 
 #plot top signature
-sigPCA <- signaturePCA(MSigDB[[rownames(scores)[1]]], VDX)
-sigPlot(sigPCA)
-sigBiplot(sigPCA, factor(pData(vdx)$grade), main = rownames(scores)[1])
+sigPlot(VDX, RAPIN[[rownames(scores)[1]]])
+sigBiplot(VDX, RAPIN[[rownames(scores)[1]]], factor(pData(vdx)$grade),
+          main = rownames(scores)[1])
 }
 
