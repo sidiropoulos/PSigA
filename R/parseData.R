@@ -2,9 +2,9 @@
 #'
 #' @description The function converts the gene identifiers (rownames) of a gene
 #' expression matrix to a desired format, supplied by the parameter
-#' \code{geneIds}. If any of the gene identifiers corresponds to more than one
-#' row of the expression matrix, the row with the highest median expression is
-#' selected.
+#' \code{geneIds}. If any of the gene identifiers correspond to more than one
+#' row of the expression matrix (e.g. probes that map to the same gene), the
+#' median expression of each patient..
 #'
 #' @param data a data frame of matrix with gene expression values where rows
 #' represent genes and columns represent samples.
@@ -69,8 +69,8 @@ parseData <- function(data, geneIds) {
     if (sum(match) == 1){
         data[match,]
     }else {
-        maxGene <- which.max(abs(apply(data[match,], 1, median)))
-        data[maxGene, ]
+        apply(data[match,], 2, median)
+
     }
 
 }
