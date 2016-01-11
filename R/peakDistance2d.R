@@ -13,6 +13,8 @@
 #' present in the PCA.
 #' @param n Number of grid points in each direction. Can be scalar or a
 #' length-2 integer vector. See \link{kde2d}.
+#' @param magnitude When TRUE the score is multiplied by the cluster density.
+#' Default: FALSE.
 #'
 #' @return A vector of length 2. The first value corresponds to the score and
 #' the second to the number of genes in the \code{signature} that were found in
@@ -35,7 +37,8 @@
 #'
 #' @import MASS
 #' @export
-peakDistance2d <- function(signature, data, threshold = 0.005, n = 200){
+peakDistance2d <- function(signature, data, threshold = 0.005, n = 200,
+                           magnitude = FALSE){
 
     inSet <- signature %in% rownames(data)
 
@@ -50,14 +53,21 @@ peakDistance2d <- function(signature, data, threshold = 0.005, n = 200){
     peaks <- .find2Dpeaks(d, threshold)
 
     #if less than 2 peaks are found, return 0
-    if (length(peaks) <= 1 | nrow(peaks) < 2)
+    if (length(peaks) <= 1)
+        return(c(0, sum(inSet), length(signature)))
+
+    if (nrow(peaks) < 2)
         return(c(0, sum(inSet), length(signature)))
 
     maxPeaks <- peaks[sort(d$z[peaks], decreasing = TRUE,
                            index.return = TRUE)$ix[1:2], ]
 
     dist <- norm(matrix(c(d$x[maxPeaks[,1]],d$y[maxPeaks[,2]]), nrow = 2))
-    c(dist, sum(inSet), length(signature))
+
+    if (magnitude)
+        c(dist*d$z[maxPeaks][1]*d$z[maxPeaks][2], sum(inSet), length(signature))
+    else
+        c(dist, sum(inSet), length(signature))
 }
 
 .find2Dpeaks <- function(d, threshold = 0.015){

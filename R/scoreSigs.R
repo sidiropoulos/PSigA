@@ -9,6 +9,8 @@
 #' @param threshold low density cutoff. Used in \code{\link{peakDistance2d}}.
 #' @param n Number of grid points in each direction. Can be scalar or a
 #' length-2 integer vector. See \link{kde2d}.
+#' @param magnitude When TRUE the score is multiplied by the cluster density.
+#' Default: FALSE.
 #'
 #' @return A data frame with 2 columns; 1) \code{score}, the \code{PSigA}
 #' score of a given signature and 2) \code{size}, the number of genes in the
@@ -37,10 +39,11 @@
 #'
 #' @import parallel
 #' @export
-scoreSigs <- function(data, signatures, threshold = 0.005, n = 200){
+scoreSigs <- function(data, signatures, threshold = 0.005, n = 200,
+                      magnitude = FALSE){
 
     scores <- do.call(rbind, mclapply(signatures, peakDistance2d, data,
-                                      threshold, n))
+                                      threshold, n, magnitude))
 
     scores <- as.data.frame(scores, stringsAsFactors = FALSE)
     colnames(scores) <- c("Score", "Genes.found", "Genes.total")
