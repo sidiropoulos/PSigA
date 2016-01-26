@@ -1,7 +1,7 @@
 #' @title Signature Biplot for principal compontents
 #'
 #' @description Produces a bibplot of the selected signature's PCA. Based on
-#' \code{\link{ggbiplot}} and \code{\link{ggplot2}}.
+#' \code{\link{ggbiplot}} and \code{ggplot2}.
 #'
 #' @param data gene expression matrix where rownames correspond to unique gene
 #' identifiers in \code{signature} format, and columns correspond to samples.
@@ -25,18 +25,20 @@
 #'
 #' @examples
 #'
-#' require(Biobase)
-#' require(breastCancerVDX)
-#' data(vdx)
+#' dummyData <- do.call(rbind, lapply(seq(0.1, 0.9, by = 0.1),
+#'                      rnorm, n = 100, m = 6))
+#' #add a row with bimodal gene expression
+#' dummyData <- rbind(dummyData, c(rnorm(70, 6, 0.1), rnorm(30, 9, 0.1)))
 #'
-#' VDX <- parseData(data = exprs(vdx)[5000:9000,],
-#'                  geneIds = fData(vdx)$Gene.symbol[5000:9000])
+#' rownames(dummyData) <- paste(rep("gene", nrow(dummyData)),
+#'                              seq(1, nrow(dummyData)), sep = "")
 #'
-#' dummySig <- c("AGR2", "SCGB1D2", "SCGB2A2")
+#' dummySig <- c("gene1", "gene8", "gene9", "gene10")
 #'
-#' sigBiplot(VDX, dummySig)
-#' sigBiplot(VDX, dummySig, groups = factor(pData(vdx)$grade),
-#'           main = "dummySig")
+#' sigBiplot(dummyData, dummySig)
+#'
+#' groups <- factor(c(rep("GroupA", 70), rep("GroupB", 30)))
+#' sigBiplot(dummyData, dummySig, groups, main = "dummySig")
 #'
 #' @import ggbiplot
 #' @export
@@ -44,10 +46,10 @@ sigBiplot <- function(data, signature, groups = NULL, labels = NULL, pcs = c(1,2
                       main = "", obs.size = 2, var.size = 3,
                       var.scaled = FALSE, palette = "Paired", ...){
 
-    pca <- .signaturePCA(data, signature)
+    pca <- signaturePCA(data, signature)
 
     if (var.scaled) {
-        norms <- measureLoadings(pca)
+        norms <- .loadingsNorm(pca)
         var.size <- norms*var.size
     }
 
@@ -71,7 +73,7 @@ sigBiplot <- function(data, signature, groups = NULL, labels = NULL, pcs = c(1,2
 #' @title Signature PCA plot
 #'
 #' @description Plot of the selected signature's PCA using
-#' \code{\link{ggplot2}}.
+#' \code{ggplot2}.
 #'
 #' @param data gene expression matrix where rownames correspond to unique gene
 #' identifiers in \code{signature} format, and columns correspond to samples.
@@ -90,17 +92,21 @@ sigBiplot <- function(data, signature, groups = NULL, labels = NULL, pcs = c(1,2
 #'
 #' @examples
 #'
-#' require(Biobase)
-#' require(breastCancerVDX)
-#' data(vdx)
+#' dummyData <- do.call(rbind, lapply(seq(0.1, 0.9, by = 0.1),
+#'                      rnorm, n = 100, m = 6))
 #'
-#' VDX <- parseData(data = exprs(vdx)[5000:9000,],
-#'                  geneIds = fData(vdx)$Gene.symbol[5000:9000])
+#' #add a row with bimodal gene expression
+#' dummyData <- rbind(dummyData, c(rnorm(70, 6, 0.1), rnorm(30, 9, 0.1)))
 #'
-#' dummySig <- c("AGR2", "SCGB1D2", "SCGB2A2")
+#' rownames(dummyData) <- paste(rep("gene", nrow(dummyData)),
+#'                              seq(1, nrow(dummyData)), sep = "")
 #'
-#' sigPlot(VDX, dummySig)
-#' sigPlot(VDX, dummySig, groups = factor(pData(vdx)$grade), main = "dummySig")
+#' dummySig <- c("gene1", "gene8", "gene9", "gene10")
+#'
+#' sigPlot(dummyData, dummySig)
+#'
+#' groups <- factor(c(rep("GroupA", 70), rep("GroupB", 30)))
+#' sigPlot(dummyData, dummySig, groups, main = "dummySig")
 #'
 #' @import ggplot2
 #' @export
@@ -108,7 +114,7 @@ sigBiplot <- function(data, signature, groups = NULL, labels = NULL, pcs = c(1,2
 sigPlot <- function(data, signature, groups = NULL, text = FALSE, pcs = c(1,2),
                     main = "", palette = "Paired", ...)  {
 
-    pca <- .signaturePCA(data, signature)
+    pca <- signaturePCA(data, signature)
 
     # Groups flag
     gFlag <- TRUE
@@ -130,7 +136,7 @@ sigPlot <- function(data, signature, groups = NULL, text = FALSE, pcs = c(1,2),
     if (gFlag) {
         p <- ggplot(data, aes(x = x, y = y, label = groups,
                               colour = factor(groups)))
-        p <- p + scale_color_brewer(palette = palette) + labs(colour='Groups')
+        p <- p + scale_color_brewer(palette = palette) + labs(colour = "Groups")
     } else {
         p <- ggplot(data, aes(x = x, y = y))
     }
@@ -146,16 +152,17 @@ sigPlot <- function(data, signature, groups = NULL, text = FALSE, pcs = c(1,2),
     p
 }
 
-.signaturePCA <- function(data, signature){
+.loadingsNorm <- function(pca, varCutoff = 0.75, pc = 2) {
 
-    inSet <- signature %in% rownames(data)
-    if (sum(inSet) < 3){
-        stop(strwrap("Less than 3 genes in the signature match the rows in the
-                      data. Make sure your data and signature are in the same
-                      gene format. Consider using parseData()", prefix = " ",
-             width = getOption("width")))
+    norms <- c()
+    for (i in 1:nrow(pca$rotation)){
+
+        if (is.null(pc))
+            pc <- which(summary(pca)$importance[3,] > varCutoff)[1]
+
+        norms <- c(norms, norm(as.matrix(pca$rotation[i, 1:pc])))
     }
 
-    genes <- signature[signature %in% rownames(data)]
-    prcomp(t(data[genes,]), center = TRUE, scale = FALSE)
+    names(norms) <- rownames(pca$rotation)
+    norms
 }
