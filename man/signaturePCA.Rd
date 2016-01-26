@@ -31,14 +31,13 @@ of class \code{prcomp}.
 }
 \examples{
 
-require(Biobase)
-require(breastCancerVDX)
-data(vdx)
+dummyData <- do.call(rbind, lapply(seq(0.1, 1, by = 0.1),
+                     rnorm, n = 100, m = 6))
+rownames(dummyData) <- paste(rep("gene", nrow(dummyData)),
+                             seq(1, nrow(dummyData)), sep = "")
+dummySig <- c("gene1", "gene8", "gene9", "gene10")
 
-VDX <- parseData(data = exprs(vdx)[5000:9000,],
-                 geneIds = fData(vdx)$Gene.symbol[5000:9000])
-
-dummySig <- c("AGR2", "SCGB1D2", "SCGB2A2")
+dummyPca <- signaturePCA(dummyData, dummySig)
 
 }
 

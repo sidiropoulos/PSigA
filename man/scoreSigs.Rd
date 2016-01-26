@@ -4,7 +4,8 @@
 \alias{scoreSigs}
 \title{Score gene signatures based on PCA density}
 \usage{
-scoreSigs(data, signatures, threshold = 0.005, n = 200, magnitude = FALSE)
+scoreSigs(data, signatures, threshold = 0.005, n = 200, magnitude = FALSE,
+  scale = FALSE)
 }
 \arguments{
 \item{data}{data frame of matrix with gene expression values where rows
@@ -22,6 +23,10 @@ length-2 integer vector. See \link{kde2d}.}
 
 \item{magnitude}{When TRUE the score is multiplied by the cluster density.
 Default: FALSE.}
+
+\item{scale}{a logical value indicating whether the variables should be
+scaled to have unit variance before the analysis takes place.
+See prcomp for more details.}
 }
 \value{
 A data frame with 2 columns; 1) \code{score}, the \code{PSigA}
