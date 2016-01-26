@@ -15,6 +15,9 @@
 #' length-2 integer vector. See \link{kde2d}.
 #' @param magnitude When TRUE the score is multiplied by the cluster density.
 #' Default: FALSE.
+#' @param scale a logical value indicating whether the variables should be
+#' scaled to have unit variance before the analysis takes place.
+#' See prcomp for more details.
 #'
 #' @return A vector of length 2. The first value corresponds to the score and
 #' the second to the number of genes in the \code{signature} that were found in
@@ -22,23 +25,31 @@
 #'
 #' @examples
 #'
-#' require(Biobase)
-#' require(breastCancerVDX)
-#' data(vdx)
-#' data(RAPIN)
+#' dummyData <- do.call(rbind, lapply(seq(0.1, 0.9, by = 0.1),
+#'                      rnorm, n = 100, m = 6))
 #'
-#' #get the first 5000 probes of the vdx array
-#' VDX <- parseData(data = exprs(vdx)[1:5000,],
-#'                    geneIds = fData(vdx)$Gene.symbol[1:5000])
+#' #add a row with bimodal gene expression
+#' dummyData <- rbind(dummyData, c(rnorm(70, 6, 0.1), rnorm(30, 9, 0.1)))
 #'
-#' dummySig <- rownames(VDX)[1:50]
+#' rownames(dummyData) <- paste(rep("gene", nrow(dummyData)),
+#'                              seq(1, nrow(dummyData)), sep = "")
+#' rownames(dummyData)
 #'
-#' peakDistance2d(dummySig, VDX)
+#' dummySig <- c("gene1", "gene8", "gene9", "gene10", "gene20", "gene30")
+#'
+#' peakDistance2d(dummySig, dummyData)
+#'
+#' #values correspond to the peak distance, the number of genes from the
+#' #signature found in the data and the total number of genes in the signature
+#' #respectively
+#'
+#' #removing the bimodal gene from the signature results to a lower score
+#' peakDistance2d(dummySig[-4], dummyData)
 #'
 #' @import MASS
 #' @export
 peakDistance2d <- function(signature, data, threshold = 0.005, n = 200,
-                           magnitude = FALSE){
+                           magnitude = FALSE, scale = FALSE){
 
     inSet <- signature %in% rownames(data)
 
@@ -47,7 +58,7 @@ peakDistance2d <- function(signature, data, threshold = 0.005, n = 200,
         return(c(-1, sum(inSet), length(signature)))
 
     sigpca <- prcomp(t(data[signature[inSet], ]), center = TRUE,
-                     scale = FALSE)
+                     scale = scale)
 
     d <- kde2d(sigpca$x[,1], sigpca$x[,2], n = n)
     peaks <- .find2Dpeaks(d, threshold)
