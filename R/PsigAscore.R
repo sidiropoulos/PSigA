@@ -1,5 +1,7 @@
 #' @title Score gene signatures based on PCA density
 #'
+#' @description PsigAscore blah blah
+#'
 #' @param data data frame of matrix with gene expression values where rows
 #' represent genes and columns represent samples.
 #' @param signatures list where every entry is a character vector of
@@ -32,7 +34,7 @@
 #' VDX <- parseData(data = exprs(vdx)[1:5000,],
 #'                  geneIds = fData(vdx)$Gene.symbol[1:5000])
 #'
-#' scores <- scoreSigs(VDX, RAPIN, threshold = 0.003)
+#' scores <- PsigAscore(VDX, RAPIN, threshold = 0.003)
 #' head(scores)
 #'
 #' #plot top signature
@@ -42,7 +44,7 @@
 #'
 #' @import parallel
 #' @export
-scoreSigs <- function(data, signatures, threshold = 0.005, n = 200,
+PsigAscore <- function(data, signatures, threshold = 0.005, n = 200,
                       magnitude = FALSE, scale = FALSE){
 
     scores <- do.call(rbind, mclapply(signatures, peakDistance2d, data,
