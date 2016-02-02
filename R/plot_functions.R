@@ -42,8 +42,8 @@
 #'
 #' @import ggbiplot
 #' @export
-sigBiplot <- function(data, signature, groups = NULL, labels = NULL, pcs = c(1,2),
-                      main = "", obs.size = 2, var.size = 3,
+sigBiplot <- function(data, signature, groups = NULL, labels = NULL,
+                      pcs = c(1,2), main = "", obs.size = 2, var.size = 3,
                       var.scaled = FALSE, palette = "Paired", ...){
 
     pca <- signaturePCA(data, signature)
