@@ -12,6 +12,10 @@ gene signature. The name of each list entry represents the signature's name.}
 \usage{
 data(RAPIN)
 }
+\value{
+A list of 21 character vectors, each one containing gene names in
+HGNC format.
+}
 \description{
 21 gene pathways obtained from Rapin et al. (2014).
 }

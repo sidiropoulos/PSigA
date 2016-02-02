@@ -18,5 +18,8 @@ NULL
 #' @format An object of type list with 21 entries, each one representing a
 #' gene signature. The name of each list entry represents the signature's name.
 #'
+#' @return A list of 21 character vectors, each one containing gene names in
+#' HGNC format.
+#'
 #' @source \url{http://www.bloodjournal.org/content/123/6/894}
 "RAPIN"
