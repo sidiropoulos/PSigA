@@ -40,3 +40,72 @@ signaturePCA <- function(data, signature, center = TRUE, scale = FALSE, ...){
     genes <- signature[signature %in% rownames(data)]
     prcomp(t(data[genes,]), center = center, scale = scale)
 }
+
+#' @title PCA-based Gene Set Enrichment Analysis (GSEA)
+#'
+#' @description ...
+#'
+#' @param data Gene expression matrix where rownames correspond to unique gene
+#' identifiers in \code{signature} format and columns correspond to samples.
+#' @param signatures list where every entry is a character vector of
+#' the gene names that correspond to a gene-pathway. If the gene format is
+#' different from the one in \code{rownames(data)}, use \code{\link{parseData}}
+#' first.
+#' @param p.adj p-value correction method. See \code{\link{p.adjust}}.
+#' @param filtered logical value indicating if genes in the supplied
+#' \code{signature} list that are not present in the \code{data} have been
+#' filtered out.
+#' @export
+rankedGSEA <- function(data, signatures, p.adj = p.adjust.methods,
+                       pcs = c(1,2), filtered = FALSE) {
+
+    if (!filtered) {
+        signatures <- lapply(signatures, .filterSignatures, rownames(data))
+    }
+
+
+
+    ### Check for signature length!
+
+    p.adj = match.arg(p.adj)
+
+    pca <- prcomp(t(data))
+
+    gsea <- list()
+
+    for (i in pcs){
+
+        loadings <- pca$rotation[ ,i]
+        ranking <- rank(abs(loadings))
+
+        tmp <- do.call(rbind, mclapply(signatures, .rankTest, loadings,
+                                       ranking))
+        tmp <- as.data.frame(tmp)
+        colnames(tmp) <- c("ks.statistic", "p.value")
+
+        q.value <- p.adjust(tmp$p.value, method = p.adj)
+        tmp$q.value <- q.value
+
+        gsea[[paste0("pc", i)]] <- tmp[with(tmp, order(q.value,
+                                                       -ks.statistic)), ]
+
+    }
+
+    gsea
+
+}
+
+.rankTest <- function(signature, loadings, ranking) {
+
+    ind <- which(names(loadings) %in% signature)
+    geneset <- ranking[ind]
+    background <- ranking[-ind]
+
+    ks <- ks.test(geneset, background)
+    c(ks$statistic, ks$p.value)
+}
+
+.filterSignatures <- function(signature, genes){
+    signature[signature %in% genes]
+}
+
