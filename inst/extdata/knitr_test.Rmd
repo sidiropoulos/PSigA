@@ -1,0 +1,43 @@
+---
+output: html_document
+---
+
+# PSigA Output Report
+
+This is a minimal example of using **knitr** to produce an _HTML_ page from _Markdown_.
+
+## GSEA
+
+```{r gsea, echo = FALSE}
+library(PsigA)
+
+plot(prcomp(t(data), scale = scale)$x, pch = 20, cex = .8)
+
+```
+
+### PC1
+
+```{r gsea_pc1, echo = FALSE}
+rownames(gsea$pc1) <- gsub("\\(|\\)","", rownames(gsea$pc1))
+kable(head(gsea$pc1, escape = TRUE, n = 10))
+```
+
+
+### PC2
+
+```{r gsea_pc2, echo = FALSE}
+rownames(gsea$pc2) <- gsub("\\(|\\)","", rownames(gsea$pc2))
+kable(head(gsea$pc2, escape = TRUE, n = 10))
+```
+
+
+## Top scoring signatures
+
+```{r graphics, echo = FALSE}
+
+topSignatures <- rownames(scores)[1:10]
+for (i in topSignatures){
+    print(sigBiplot(data, signatures[[i]], main = i))
+}
+```
+
