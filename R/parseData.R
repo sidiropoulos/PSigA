@@ -22,10 +22,8 @@
 #'
 #' data(vdx)
 #'
-#' #use fData() to get the gene symbols for vdx. We use only the first 100
-#' #probes as an example.
-#' VDXparsed <- parseData(data = exprs(vdx)[1:100,],
-#'                        geneIds = fData(vdx)$Gene.symbol[1:100])
+#' #use fData() to get the gene symbols for vdx.
+#' VDXparsed <- parseData(data = exprs(vdx), geneIds = fData(vdx)$Gene.symbol)
 #'
 #'
 #' require(ALL)
@@ -40,37 +38,34 @@
 #'
 #' require(hgu95av2.db)
 #'
-#' keys <- AnnotationDbi::select(hgu95av2.db, rownames(ALLexprs)[1:100],
+#' keys <- AnnotationDbi::select(hgu95av2.db, rownames(ALLexprs),
 #'                              "SYMBOL", "PROBEID")
 #' #remove probe duplicates
 #' geneIds <- keys$SYMBOL[ !duplicated(keys$PROBEID) ]
 #'
 #' ALLparsed <- parseData(ALLexprs, geneIds)
 #'
-#' @import parallel
+#' @importFrom dplyr group_by
+#' @importFrom dplyr summarise_each
+#' @importFrom dplyr funs
 #' @export
 parseData <- function(data, geneIds) {
 
+    #check if data is data.frame
+    if (!is.data.frame(data))
+        data <- data.frame(data)
+
+    data$geneIds <- geneIds
+
     #find and remove NA values
-    nonNAgenes <- which(!is.na(geneIds))
-    data <- data[nonNAgenes,]
-    geneIds <- geneIds[nonNAgenes]
+    data <- data[which(!is.na(geneIds)), ]
 
-    #select the probe/isoform with the highest median expression
-    d <- do.call(rbind, mclapply(unique(geneIds), .maxMedian, data, geneIds))
+    data <- summarise_each(group_by(data, geneIds), funs(mean))
+    data <- as.data.frame(data)
 
-    rownames(d) <- unique(geneIds)
-    d
+    rownames(data) <- data$geneIds
+    data <- subset(data, select = - geneIds)
+
+    data
 }
 
-.maxMedian <- function(targetGene, data, genes) {
-
-    match <- genes == targetGene
-    if (sum(match) == 1){
-        data[match,]
-    }else {
-        apply(data[match,], 2, median)
-
-    }
-
-}

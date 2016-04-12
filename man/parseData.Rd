@@ -32,10 +32,8 @@ require(breastCancerVDX)
 
 data(vdx)
 
-#use fData() to get the gene symbols for vdx. We use only the first 100
-#probes as an example.
-VDXparsed <- parseData(data = exprs(vdx)[1:100,],
-                       geneIds = fData(vdx)$Gene.symbol[1:50])
+#use fData() to get the gene symbols for vdx.
+VDXparsed <- parseData(data = exprs(vdx), geneIds = fData(vdx)$Gene.symbol)
 
 
 require(ALL)
@@ -50,7 +48,7 @@ annotation(ALL)
 
 require(hgu95av2.db)
 
-keys <- AnnotationDbi::select(hgu95av2.db, rownames(ALLexprs)[1:50],
+keys <- AnnotationDbi::select(hgu95av2.db, rownames(ALLexprs),
                              "SYMBOL", "PROBEID")
 #remove probe duplicates
 geneIds <- keys$SYMBOL[ !duplicated(keys$PROBEID) ]
