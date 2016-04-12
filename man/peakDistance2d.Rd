@@ -25,7 +25,7 @@ Default: FALSE.}
 
 \item{scale}{a logical value indicating whether the variables should be
 scaled to have unit variance before the analysis takes place.
-See prcomp for more details.}
+See prcomp for more details. Default: FALSE.}
 }
 \value{
 A vector of length 2. The first value corresponds to the score and

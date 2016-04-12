@@ -17,7 +17,10 @@
 #' Default: FALSE.
 #' @param scale a logical value indicating whether the variables should be
 #' scaled to have unit variance before the analysis takes place.
-#' See prcomp for more details.
+#' See prcomp for more details. Default: FALSE.
+#' @param filtered logical value indicating if genes in the supplied
+#' \code{signature} list that are not present in the \code{data} have been
+#' filtered out. Default: FALSE.
 #'
 #' @return A vector of length 2. The first value corresponds to the score and
 #' the second to the number of genes in the \code{signature} that were found in
@@ -49,15 +52,18 @@
 #' @import MASS
 #' @export
 peakDistance2d <- function(signature, data, threshold = 0.005, n = 200,
-                           magnitude = FALSE, scale = FALSE){
+                           magnitude = FALSE, scale = FALSE, filtered = FALSE){
 
-    inSet <- signature %in% rownames(data)
+    if (!filtered)
+        signature <- .filterSignatures(signature, rownames(data))
 
     #if less than 3 genes are found return -1
-    if (sum(inSet) < 3)
-        return(c(-1, sum(inSet), length(signature)))
+    if (length(signature) < 3) {
+        stop(strwrap("Too few genes (< 3) from the selected signature are
+                     present in the dataset."))
+    }
 
-    sigpca <- prcomp(t(data[signature[inSet], ]), center = TRUE,
+    sigpca <- prcomp(t(data[signature, ]), center = TRUE,
                      scale = scale)
 
     d <- kde2d(sigpca$x[,1], sigpca$x[,2], n = n)
@@ -65,10 +71,10 @@ peakDistance2d <- function(signature, data, threshold = 0.005, n = 200,
 
     #if less than 2 peaks are found, return 0
     if (length(peaks) <= 1)
-        return(c(0, sum(inSet), length(signature)))
+        return(c(0, length(signature)))
 
     if (nrow(peaks) < 2)
-        return(c(0, sum(inSet), length(signature)))
+        return(c(0, length(signature)))
 
     maxPeaks <- peaks[sort(d$z[peaks], decreasing = TRUE,
                            index.return = TRUE)$ix[1:2], ]
@@ -76,9 +82,9 @@ peakDistance2d <- function(signature, data, threshold = 0.005, n = 200,
     dist <- norm(matrix(c(d$x[maxPeaks[,1]],d$y[maxPeaks[,2]]), nrow = 2))
 
     if (magnitude)
-        c(dist*d$z[maxPeaks][1]*d$z[maxPeaks][2], sum(inSet), length(signature))
+        c(dist*d$z[maxPeaks][1]*d$z[maxPeaks][2], length(signature))
     else
-        c(dist, sum(inSet), length(signature))
+        c(dist, length(signature))
 }
 
 .find2Dpeaks <- function(d, threshold = 0.015){
