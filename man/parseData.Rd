@@ -2,7 +2,7 @@
 % Please edit documentation in R/parseData.R
 \name{parseData}
 \alias{parseData}
-\title{Parse data to be used \code{\link{PSigA}} functions}
+\title{Parse data to be used \code{\link{PsigA}} functions}
 \usage{
 parseData(data, geneIds)
 }
@@ -12,7 +12,7 @@ represent genes and columns represent samples.}
 
 \item{geneIds}{vector of length \code{nrow(data)} containing gene names in
 of the desired format. The format must be the same as the format of the
-signatures that will be used in the \code{PSigA} functions.}
+signatures that will be used in the \code{PsigA} functions.}
 }
 \value{
 An object of class \code{data} where the rows correspond to

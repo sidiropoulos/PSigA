@@ -1,13 +1,13 @@
-#' PSigA: A gene-signature ranking method based on sample density in PCA space.
+#' PsigA: A gene-signature ranking method based on sample density in PCA space.
 #'
-#' The PSigA package provides a set of functions to perform Principal Component
+#' The PsigA package provides a set of functions to perform Principal Component
 #' analysis based on genetic pathways. Moreover PSigA incorporates an algorithm
 #' to measure the spread of the data in the PCA space and rank the
 #' gene-signatures based on their ability to split the data in distinct
 #' entities.
 #'
 #' @docType package
-#' @name PSigA
+#' @name PsigA
 NULL
 
 #' Rapin et al. signatures
@@ -43,7 +43,7 @@ NULL
 #' scaled to have unit variance before the analysis takes place.
 #' See prcomp for more details.
 #'
-#' @return A data frame with 2 columns; 1) \code{score}, the \code{PSigA}
+#' @return A data frame with 2 columns; 1) \code{score}, the \code{PsigA}
 #' score of a given signature and 2) \code{size}, the number of genes in the
 #' \code{signature} that were found in the \code{data}. If
 #' \code{parsed = FALSE}, the function returns a list, where the first entry
