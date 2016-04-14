@@ -54,7 +54,7 @@ signaturePCA <- function(data, signature, center = TRUE, scale = FALSE, ...){
 #' @param p.adj p-value correction method. See \code{\link{p.adjust}}.
 #' @param filtered logical value indicating if genes in the supplied
 #' \code{signature} list that are not present in the \code{data} have been
-#' filtered out.
+#' filtered out. Default: FALSE.
 #' @export
 rankedGSEA <- function(data, signatures, p.adj = p.adjust.methods,
                        pcs = c(1,2), filtered = FALSE) {
