@@ -5,7 +5,7 @@
 \title{Peak distance in a 2D signature-PCA}
 \usage{
 peakDistance2d(signature, data, threshold = 0.005, n = 200,
-  magnitude = FALSE, scale = FALSE)
+  magnitude = FALSE, scale = FALSE, filtered = FALSE)
 }
 \arguments{
 \item{signature}{character vector with the signature's gene identifiers}
@@ -26,6 +26,10 @@ Default: FALSE.}
 \item{scale}{a logical value indicating whether the variables should be
 scaled to have unit variance before the analysis takes place.
 See prcomp for more details. Default: FALSE.}
+
+\item{filtered}{logical value indicating if genes in the supplied
+\code{signature} list that are not present in the \code{data} have been
+filtered out. Default: FALSE.}
 }
 \value{
 A vector of length 2. The first value corresponds to the score and

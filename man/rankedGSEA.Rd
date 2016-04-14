@@ -4,7 +4,8 @@
 \alias{rankedGSEA}
 \title{PCA-based Gene Set Enrichment Analysis (GSEA)}
 \usage{
-rankedGSEA(data, signatures, p.adj = p.adjust.methods, pcs = c(1, 2))
+rankedGSEA(data, signatures, p.adj = p.adjust.methods, pcs = c(1, 2),
+  filtered = FALSE)
 }
 \arguments{
 \item{data}{Gene expression matrix where rownames correspond to unique gene
@@ -16,6 +17,10 @@ different from the one in \code{rownames(data)}, use \code{\link{parseData}}
 first.}
 
 \item{p.adj}{p-value correction method. See \code{\link{p.adjust}}.}
+
+\item{filtered}{logical value indicating if genes in the supplied
+\code{signature} list that are not present in the \code{data} have been
+filtered out. Default: FALSE.}
 }
 \description{
 ...
