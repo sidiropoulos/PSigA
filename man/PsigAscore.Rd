@@ -5,7 +5,8 @@
 \title{Score gene signatures based on PCA density}
 \usage{
 PsigAscore(data, signatures, threshold = 0.005, n = 200,
-  magnitude = FALSE, scale = FALSE)
+  magnitude = FALSE, scale = FALSE, report = TRUE,
+  p.adj = p.adjust.methods, min.length = 10, max.length = 500)
 }
 \arguments{
 \item{data}{data frame of matrix with gene expression values where rows
@@ -46,8 +47,7 @@ require(breastCancerVDX)
 data(vdx)
 data(RAPIN)
 
-VDX <- parseData(data = exprs(vdx)[1:5000,],
-                 geneIds = fData(vdx)$Gene.symbol[1:5000])
+VDX <- parseData(data = exprs(vdx), geneIds = fData(vdx)$Gene.symbol)
 
 scores <- PsigAscore(VDX, RAPIN, threshold = 0.003)
 head(scores)

@@ -31,8 +31,7 @@
 #' data(vdx)
 #' data(RAPIN)
 #'
-#' VDX <- parseData(data = exprs(vdx)[1:5000,],
-#'                  geneIds = fData(vdx)$Gene.symbol[1:5000])
+#' VDX <- parseData(data = exprs(vdx), geneIds = fData(vdx)$Gene.symbol)
 #'
 #' scores <- PsigAscore(VDX, RAPIN, threshold = 0.003)
 #' head(scores)
@@ -43,16 +42,53 @@
 #'           main = rownames(scores)[1])
 #'
 #' @import parallel
+#' @importFrom knitr knit
+#' @importFrom knitr pandoc
 #' @export
 PsigAscore <- function(data, signatures, threshold = 0.005, n = 200,
-                      magnitude = FALSE, scale = FALSE){
+                      magnitude = FALSE, scale = FALSE, report = TRUE,
+                      p.adj = p.adjust.methods, min.length = 10,
+                      max.length = 500){
 
-    scores <- do.call(rbind, mclapply(signatures, peakDistance2d, data,
-                                      threshold, n, magnitude, scale))
+    #check input
+    p.adj <- match.arg(p.adj)
+
+    #Filter signatures
+    message("Filtering signatures... ", appendLF = FALSE)
+    signatures <- lapply(signatures, .filterSignatures, rownames(data))
+
+    sig.lengths <- sapply(signatures, length)
+    keep <- sig.lengths >= min.length & sig.lengths <= max.length
+
+    message("Done! ", appendLF = FALSE)
+    message(paste0("(", sum(keep), "/", length(signatures), " passed)"))
+
+    #Call scoring function
+    message("Computing PsigA scores... ", appendLF = FALSE)
+    scores <- do.call(rbind, mclapply(signatures[keep], peakDistance2d, data,
+                                      threshold, n, magnitude, scale,
+                                      filtered = TRUE))
 
     scores <- as.data.frame(scores, stringsAsFactors = FALSE)
-    colnames(scores) <- c("Score", "Genes.found", "Genes.total")
-    s <- sort(scores$Score, decreasing = TRUE, index.return = TRUE)
+    colnames(scores) <- c("Score", "Length")
+    scores <- scores[with(scores, order(-Score)), ]
 
-    scores[s$ix, ]
+    message("Done!")
+
+    #Perform GSEA
+    message("Performing GSEA... ", appendLF = FALSE)
+    gsea <- rankedGSEA(data, signatures[keep], p.adj, filtered = TRUE)
+    message("Done!")
+
+    if (report) {
+        f <- system.file("extdata", "knitr_test.Rmd", package = "PsigA")
+
+        message("Generating HTML report... ", appendLF = FALSE)
+        pandoc(knit(f, quiet = TRUE), format = "html")
+        message("Done!")
+
+        browseURL("knitr_test.html")
+    }
+
+    list(scores = scores, gsea = gsea)
 }
