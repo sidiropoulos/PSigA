@@ -18,6 +18,8 @@ first.}
 
 \item{p.adj}{p-value correction method. See \code{\link{p.adjust}}.}
 
+\item{pcs}{principal components to perform GSEA on. Default: c(1,2).}
+
 \item{filtered}{logical value indicating if genes in the supplied
 \code{signature} list that are not present in the \code{data} have been
 filtered out. Default: FALSE.}

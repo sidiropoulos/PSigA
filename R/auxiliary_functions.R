@@ -52,6 +52,7 @@ signaturePCA <- function(data, signature, center = TRUE, scale = FALSE, ...){
 #' different from the one in \code{rownames(data)}, use \code{\link{parseData}}
 #' first.
 #' @param p.adj p-value correction method. See \code{\link{p.adjust}}.
+#' @param pcs principal components to perform GSEA on. Default: c(1,2).
 #' @param filtered logical value indicating if genes in the supplied
 #' \code{signature} list that are not present in the \code{data} have been
 #' filtered out. Default: FALSE.
