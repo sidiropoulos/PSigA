@@ -29,8 +29,8 @@ observations belong to. If provided the points will be colored accordingly}
 \item{var.size}{size of the text for the variables}
 
 \item{var.scaled}{logical value. When set to TRUE the variable text size is
-proportional to the Euclidean Norm of the variable's loading
-(see \code{\link{measureLoadings}}).}
+proportional to the Euclidean Norm of the variable's PC loading; the
+variable's contribution to the variance.}
 
 \item{palette}{colorbrewer palette scheme to be used. Applicable only when
 \code{groups} are provided.}

@@ -14,8 +14,8 @@
 #' @param obs.size size of the points for the observations
 #' @param var.size size of the text for the variables
 #' @param var.scaled logical value. When set to TRUE the variable text size is
-#' proportional to the Euclidean Norm of the variable's loading
-#' (see \code{\link{measureLoadings}}).
+#' proportional to the Euclidean Norm of the variable's PC loading; the
+#' variable's contribution to the variance.
 #' @param main plot title
 #' @param palette colorbrewer palette scheme to be used. Applicable only when
 #' \code{groups} are provided.
