@@ -46,7 +46,7 @@ to measure the spread of the data in the PCA space and rank the
 gene-signatures based on their ability to split the data in distinct
 entities.
 
-PsigAscore blah blah
+PsigA blah blah
 }
 \examples{
 
@@ -57,7 +57,7 @@ data(RAPIN)
 
 VDX <- parseData(data = exprs(vdx), geneIds = fData(vdx)$Gene.symbol)
 
-scores <- PsigAscore(VDX, RAPIN, threshold = 0.003)
+scores <- PsigA(VDX, RAPIN, threshold = 0.003)
 head(scores)
 
 #plot top signature

@@ -26,7 +26,7 @@ NULL
 
 #' @title Score gene signatures based on PCA density
 #'
-#' @description PsigAscore blah blah
+#' @description PsigA blah blah
 #'
 #' @param data data frame of matrix with gene expression values where rows
 #' represent genes and columns represent samples.
@@ -59,7 +59,7 @@ NULL
 #'
 #' VDX <- parseData(data = exprs(vdx), geneIds = fData(vdx)$Gene.symbol)
 #'
-#' scores <- PsigAscore(VDX, RAPIN, threshold = 0.003)
+#' scores <- PsigA(VDX, RAPIN, threshold = 0.003)
 #' head(scores)
 #'
 #' #plot top signature
