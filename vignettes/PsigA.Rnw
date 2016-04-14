@@ -1,0 +1,159 @@
+%\VignetteIndexEntry{PsigA: A gene-signature ranking method based on sample density in PCA space}
+%\VignetteDepends{BiocStyle}
+%\VignetteKeywords{Gene Signatures, Pathways, Visualization, PCA}
+%\VignettePackage{PsigA}
+%\usepackage[utf8]{inputenc}
+\documentclass{article}
+
+\usepackage{chngcntr}
+\counterwithout{figure}{section}
+
+<<style, echo=FALSE, results=tex>>=
+    BiocStyle::latex()
+@
+    \newcommand{\bam}{\texttt{BAM}}
+
+\title{\Biocpkg{PsigA}: A gene-signature ranking method based on sample density
+in PCA space}
+\author{Nikos Sidiropoulos, Nicolas Rapin, Frederik Otzen Bagger}
+\date{Modified: 02 February, 2016. Compiled: \today}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+PsigA is a principal component analysis (PCA) based method, where signatures are
+ranked according to how they split cluster of samples in a reduced PCA space.
+The approach is unsupervised, and automatically integrates functional assessment
+of data, revealing potential batch effects and biases in the data.
+
+\section{RNAprobR workflow}
+
+The package was designed with a specific processing workflow in mind (Fig.~\ref{fig:workflow}). It reads-in the Unique Barcodes files and calculates EUCs (\Rfunction{readsamples()}), compiles positional information based on sequenced fragments (\Rfunction{comp()}), performs data normalization (\Rfunction{dtcr()}, \Rfunction{slograt()}, \Rfunction{swinsor()}) and exports data in various formats (\Rfunction{GR2norm\_df()}, \Rfunction{plotRNA()}, \Rfunction{norm2bedgraph()})
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{workflow.pdf}
+\caption{RNAprobR workflow}
+\label{fig:workflow}
+\end{figure}
+
+\section{Import Data}
+
+PsigA works with expression matrices where rows and columns corresponding to
+genes and samples respectively. The gene identifier format of the expression
+matrix (rownames) must be the same with the format of the gene signatures that
+will be provided.
+
+
+The first step in data processing is reading in the Unique Barcodes files, combining samples of the same treatment (if we had e.g. repeated control) and calculating EUCs. All of those steps are performed by \Rfunction{readsamples()} function.
+Start with specifying paths to different Unique Barcodes files and their respective k2n files (order matters!), followed by reading-in the data and calculating EUCs according to HRF-Seq method:
+
+<<preliminaries>>=
+library(PsigA)
+@
+
+<<parseData>>=
+treated <- c(system.file("extdata", "unique_barcodes14.gz", package="RNAprobR"),
+system.file("extdata", "unique_barcodes22.gz", package="RNAprobR"))
+control <- c(system.file("extdata", "unique_barcodes16.gz", package="RNAprobR"),
+system.file("extdata", "unique_barcodes24.gz", package="RNAprobR"))
+
+k2n_treated <- c(system.file("extdata", "k2n_14", package="RNAprobR"),
+system.file("extdata", "k2n_22", package="RNAprobR"))
+k2n_control <- c(system.file("extdata", "k2n_16", package="RNAprobR"),
+system.file("extdata", "k2n_24", package="RNAprobR"))
+
+control_euc <- readsamples(control, euc="HRF-Seq", k2n_files=k2n_control)
+treated_euc <- readsamples(treated, euc="HRF-Seq", k2n_files=k2n_treated)
+@
+
+\Rcode{control\_euc} and \Rcode{treated\_euc} are \Rpackage{GenomicRanges} (GRanges) objects holding information on sequenced fragments span and EUC.
+
+\section{Compiling positional data}
+
+\Rfunction{comp()} function takes as input an object imported by \Rfunction{readsamples()} function and uses it to compile needed data for each nucleotide in analyzed RNA molecules. Specifically it computes:
+\begin{itemize}
+\item termination count (TC),
+\item coverage (Cover),
+\item termination-coverage ratio (TCR),
+\item priming count (PC).
+\end{itemize}
+
+If one specifies path to FASTA file which was used for mapping (option: \Rcode{fasta\_file}) it also adds nucleotide identity (nt). By specifying "cutoff" value, function discards fragments which are shorter than the provided value.
+Usage:
+
+<<comp>>=
+treated_comp <- comp(treated_euc, cutoff=101, fasta_file =
+system.file("extdata", "hrfseq.fa", package="RNAprobR"))
+control_comp <- comp(control_euc, cutoff=101, fasta_file =
+system.file("extdata", "hrfseq.fa", package="RNAprobR"))
+@
+\Rcode{treated\_comp} and \Rcode{control\_comp} are \Rpackage{GRanges} objects with each range being of length 1.
+
+\section{Normalization}
+Positionally compiled GRanges objects can be used as input for normalization. In this package we have implemented three normalization functions:
+\begin{itemize}
+\item \Rfunction{dtcr()}, which performs $\Delta$TCR normalization as described in (Kielpinski and Vinther, 2014),
+\item \Rfunction{slograt()}, which calculates smooth log-ratio as described in (Wan et al., 2014),
+\item \Rfunction{swinsor()}, which calculates smooth Winsor normalization. First it calculates Winsorized values as described in (Rouskin et al., 2013) but in 1-nt sliding windows, and then for each nucleotide it returns mean and standard deviation of all predictions that overlapped given nucleotide.
+\end{itemize}
+Single \Rpackage{GRanges} object can hold data normalized by all of the abovementioned methods - usually the first call of normalization functions will create the GRanges object and subsequent calls will add the data to already existing object (via \Rcode{add\_to} option).
+Let's normalize HRF-Seq data with all three methods:
+    <<dtcr>>=
+    hrfseq_norm <- dtcr(control_GR=control_comp, treated_GR=treated_comp,
+                        window_size=3, nt_offset=1)
+<<slograt>>=
+    hrfseq_norm <- slograt(control_GR=control_comp, treated_GR=treated_comp,
+                           add_to=hrfseq_norm)
+<<swinsor>>=
+    hrfseq_norm <- swinsor(Comp_GR=treated_comp, add_to=hrfseq_norm)
+@
+
+    One can add data from compiled \Rpackage{GRanges} object (TC, Cover, TCR) to normalized \Rpackage{GRanges} object with \Rfunction{compdata()} function:
+    <<compdata>>=
+    hrfseq_norm <- compdata(Comp_GR=treated_comp, add_to=hrfseq_norm)
+@
+
+    \section{Export}
+
+The package allows for data export in multiple formats. First, let say we are interested in obtaining the slograt normalized table for RNase\_P. Simply type:
+    <<GR2norm_df>>=
+    norm_df <- GR2norm_df(hrfseq_norm, RNAid = "RNase_P", norm_methods = "slograt")
+@
+
+    Or, we could make a plot of $\Delta$TCR values over 16S rRNA:
+    <<plotRNA,fig=TRUE>>=
+    plotRNA(norm_GR=hrfseq_norm, RNAid="16S_rRNA_E.coli", norm_method="dtcr")
+@
+
+    At last, if we want to visualize the data in UCSC Genome Browser we can generate the BedGraph file:
+    <<norm2bedgraph>>=
+    RNase_P_BED <- system.file("extdata", "RNaseP.bed", package="RNAprobR")
+norm2bedgraph(hrfseq_norm, bed_file = RNase_P_BED, norm_method = "dtcr",
+              genome_build = "baciSubt2", bedgraph_out_file = "RNaseP_dtcr",
+              track_name = "dtcr", track_description = "deltaTCR Normalization")
+@
+
+    % ------------------------------- Session Info ------------------------------- %
+    \newpage
+\section{Session Info}
+
+<<sessInfo, echo=FALSE>>=
+    sessionInfo()
+@
+
+    <<resetOptions, results=hide, echo=FALSE>>=
+    options(prompt="> ", continue="+ ")
+@
+
+    % -------------------------------- References -------------------------------- %
+    \newpage
+\bibliography{refs}
+
+\end{document}
